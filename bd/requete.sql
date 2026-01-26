@@ -1,0 +1,1 @@
+select a1.VILLE from AEROPORT a1 join VOL on VOL.codeAeroportA=a1.code join AEROPORT a2 on VOL.codeAeroportD=a2.code where a2.ville='Paris';

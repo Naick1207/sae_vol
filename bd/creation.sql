@@ -7,7 +7,7 @@ CREATE TABLE VOL(
     tempsA TIMESTAMP,
     terminalA VARCHAR(5),
     codeAeroportA INTEGER,
-    PRIMARY KEY(numero, compagnie, jourD, heureD),
+    PRIMARY KEY(numero, compagnie, tempsD),
     CHECK (codeAeroportA != codeAeroportD)
 );
 
