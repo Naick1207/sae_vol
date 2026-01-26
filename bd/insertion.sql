@@ -1,12 +1,12 @@
 CREATE TABLE VOL(
     numero INTEGER,
-    compagnie TEXT,
+    compagnie VARCHAR(50),
     jourD DATE,
-    heureD TIME,
+    heureD TIMESTAMP,
     terminalD VARCHAR(5),
     codeAeroportD INTEGER,
     jourA DATE,
-    heureA TIME,
+    heureA TIMESTAMP,
     terminalA VARCHAR(5),
     codeAeroportA INTEGER,
     PRIMARY KEY(numero, compagnie, jourD, heureD),
@@ -14,11 +14,11 @@ CREATE TABLE VOL(
 );
 
 CREATE TABLE AEROPORT(
-    code INT,
-    nom TEXT,
-    pays TEXT,
-    ville TEXT
+    code INTEGER PRIMARY KEY,
+    nom VARCHAR(30),
+    pays VARCHAR(30),
+    ville VARCHAR(50)
 );
 
-ALTER TABLE VOL FOREIGN KEY (codeAeroportD) REFERENCES AEROPORT(code);
-ALTER TABLE VOL FOREIGN KEY (codeAeroportA) REFERENCES AEROPORT(code);
+ALTER TABLE VOL ADD FOREIGN KEY (codeAeroportD) REFERENCES AEROPORT(code);
+ALTER TABLE VOL ADD FOREIGN KEY (codeAeroportA) REFERENCES AEROPORT(code);
