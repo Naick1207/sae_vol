@@ -1,54 +1,17 @@
 select a1.VILLE from AEROPORT a1 join VOL on VOL.codeAeroportA=a1.code join AEROPORT a2 on VOL.codeAeroportD=a2.code where a2.ville='Paris';
 
-INSERT INTO AEROPORT VALUES (100, 'Charles de Gaulle', 'France', 'Paris');
-INSERT INTO AEROPORT VALUES (200, 'Schiphol', 'Pays-Bas', 'Amsterdam');
-INSERT INTO AEROPORT VALUES (300, 'Barajas', 'Espagne', 'Madrid');
-INSERT INTO AEROPORT VALUES (400, 'Fiumicino', 'Italie', 'Rome');
-INSERT INTO AEROPORT VALUES (500, 'Heathrow', 'Royaume-Uni', 'Londres');
-INSERT INTO AEROPORT VALUES (600, 'Tegel', 'Allemagne', 'Berlin');
-INSERT INTO AEROPORT VALUES (700, 'John F Kennedy', 'USA', 'New York');
+select aeroFin.ville from AEROPORT aeroFin
+join VOL vol2 on aeroFin.code = vol2.codeAeroportA
+join AEROPORT aeroMid on aeroMid.code = vol2.codeAeroportD
+join VOL vol1 on aeroMid.code = vol1.codeAeroportA
+join AEROPORT aeroDep on aeroDep.code = vol1.codeAeroportD
+where aeroDep.ville = 'Paris' and vol2.tempsD >= vol1.tempsA;
 
-INSERT INTO VOL VALUES (
-    1, 'AirFrance',
-    TO_TIMESTAMP('10/03/2026 08:00:00','DD/MM/YYYY HH24:MI:SS'),
-    '2A', 100,
-    TO_TIMESTAMP('10/03/2026 09:30:00','DD/MM/YYYY HH24:MI:SS'),
-    'B', 200
-);
-INSERT INTO VOL VALUES (
-    2, 'AirFrance',
-    TO_TIMESTAMP('10/03/2026 07:45:00','DD/MM/YYYY HH24:MI:SS'),
-    '2B', 100,
-    TO_TIMESTAMP('10/03/2026 10:00:00','DD/MM/YYYY HH24:MI:SS'),
-    'T1', 300
-);
-INSERT INTO VOL VALUES (
-    3, 'Alitalia',
-    TO_TIMESTAMP('10/03/2026 09:00:00','DD/MM/YYYY HH24:MI:SS'),
-    '1C', 100,
-    TO_TIMESTAMP('10/03/2026 11:00:00','DD/MM/YYYY HH24:MI:SS'),
-    'T3', 400
-);
-
-INSERT INTO VOL VALUES (
-    4, 'KLM',
-    TO_TIMESTAMP('10/03/2026 11:00:00','DD/MM/YYYY HH24:MI:SS'),
-    'C', 200,
-    TO_TIMESTAMP('10/03/2026 12:00:00','DD/MM/YYYY HH24:MI:SS'),
-    '5', 500
-);
-INSERT INTO VOL VALUES (
-    5, 'Iberia',
-    TO_TIMESTAMP('10/03/2026 12:00:00','DD/MM/YYYY HH24:MI:SS'),
-    'T2', 300,
-    TO_TIMESTAMP('10/03/2026 14:30:00','DD/MM/YYYY HH24:MI:SS'),
-    'A', 600
-);
-
-INSERT INTO VOL VALUES (
-    6, 'BritishAirways',
-    TO_TIMESTAMP('10/03/2026 15:00:00','DD/MM/YYYY HH24:MI:SS'),
-    '5', 500,
-    TO_TIMESTAMP('10/03/2026 22:00:00','DD/MM/YYYY HH24:MI:SS'),
-    '4', 700
-);
+select aeroFin.ville from AEROPORT aeroFin
+join VOL vol3 on aeroFin.code = vol3.codeAeroportA
+join AEROPORT aeroMid2 on aeroMid2.code = vol3.codeAeroportD
+join VOL vol2 on aeroMid2.code = vol2.codeAeroportA
+join AEROPORT aeroMid1 on aeroMid1.code = vol2.codeAeroportD
+join VOL vol1 on aeroMid1.code = vol1.codeAeroportA
+join AEROPORT aeroDep on aeroDep.code = vol1.codeAeroportD
+where aeroDep.ville = 'Paris' and vol2.tempsD >= vol1.tempsA and vol3.tempsD >= vol2.tempsA;
