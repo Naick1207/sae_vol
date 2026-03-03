@@ -1,87 +1,49 @@
 from .extensions import db
 from .models import Aeroport, Vol
 from .myapp import app
-from datetime import datetime
 
 @app.cli.command()
 def syncdb():
-    db.create_all()
-    
-    # Nettoyage des tables existantes
-    db.session.query(Vol).delete()
-    db.session.query(Aeroport).delete()
-    
-    # --- AÉROPORTS ---
-    aeroport1 = Aeroport(code=456, nom="Antonio Carlos", pays="Brésil", ville="Rio de Janeiro")
-    aeroport2 = Aeroport(code=123, nom="Charles de Gaulle", pays="France", ville="Paris")
-    aeroport3 = Aeroport(code=100, nom="Charles de Gaulle", pays="France", ville="Paris")
-    aeroport4 = Aeroport(code=200, nom="Schiphol", pays="Pays-Bas", ville="Amsterdam")
-    aeroport5 = Aeroport(code=300, nom="Barajas", pays="Espagne", ville="Madrid")
-    aeroport6 = Aeroport(code=400, nom="Fiumicino", pays="Italie", ville="Rome")
-    aeroport7 = Aeroport(code=500, nom="Heathrow", pays="Royaume-Uni", ville="Londres")
-    aeroport8 = Aeroport(code=600, nom="Tegel", pays="Allemagne", ville="Berlin")
-    aeroport9 = Aeroport(code=700, nom="John F Kennedy", pays="USA", ville="New York")
-    
-    # --- VOLS ---
-    vol1 = Vol(compagnie="AirFrance",
-              tempsD=datetime.strptime("12/02/2026 12:34:56", "%d/%m/%Y %H:%M:%S"),
-              terminalD="1", codeAeroportD=123,
-              tempsA=datetime.strptime("14/02/2026 14:42:23", "%d/%m/%Y %H:%M:%S"),
-              terminalA="2E", codeAeroportA=456)
-    
-    vol2 = Vol(compagnie="AirFrance",
-              tempsD=datetime.strptime("10/03/2026 08:00:00", "%d/%m/%Y %H:%M:%S"),
-              terminalD="2A", codeAeroportD=100,
-              tempsA=datetime.strptime("10/03/2026 09:30:00", "%d/%m/%Y %H:%M:%S"),
-              terminalA="B", codeAeroportA=200)
-    
-    vol3 = Vol(numero=2, compagnie="AirFrance",
-              tempsD=datetime.strptime("10/03/2026 07:45:00", "%d/%m/%Y %H:%M:%S"),
-              terminalD="2B", codeAeroportD=100,
-              tempsA=datetime.strptime("10/03/2026 10:00:00", "%d/%m/%Y %H:%M:%S"),
-              terminalA="T1", codeAeroportA=300)
-    
-    vol4 = Vol(numero=3, compagnie="Alitalia",
-              tempsD=datetime.strptime("10/03/2026 09:00:00", "%d/%m/%Y %H:%M:%S"),
-              terminalD="1C", codeAeroportD=100,
-              tempsA=datetime.strptime("10/03/2026 11:00:00", "%d/%m/%Y %H:%M:%S"),
-              terminalA="T3", codeAeroportA=400)
-    
-    vol5 = Vol(numero=4, compagnie="KLM",
-              tempsD=datetime.strptime("10/03/2026 11:00:00", "%d/%m/%Y %H:%M:%S"),
-              terminalD="C", codeAeroportD=200,
-              tempsA=datetime.strptime("10/03/2026 12:00:00", "%d/%m/%Y %H:%M:%S"),
-              terminalA="5", codeAeroportA=500)
-    
-    vol6 = Vol(numero=5, compagnie="Iberia",
-              tempsD=datetime.strptime("10/03/2026 12:00:00", "%d/%m/%Y %H:%M:%S"),
-              terminalD="T2", codeAeroportD=300,
-              tempsA=datetime.strptime("10/03/2026 14:30:00", "%d/%m/%Y %H:%M:%S"),
-              terminalA="A", codeAeroportA=600)
-    
-    vol7 = Vol(numero=6, compagnie="BritishAirways",
-              tempsD=datetime.strptime("10/03/2026 15:00:00", "%d/%m/%Y %H:%M:%S"),
-              terminalD="5", codeAeroportD=500,
-              tempsA=datetime.strptime("10/03/2026 22:00:00", "%d/%m/%Y %H:%M:%S"),
-              terminalA="4", codeAeroportA=700)
-    
-    # Ajout individuel comme dans ton exemple
-    db.session.add(aeroport1)
-    db.session.add(aeroport2)
-    db.session.add(aeroport3)
-    db.session.add(aeroport4)
-    db.session.add(aeroport5)
-    db.session.add(aeroport6)
-    db.session.add(aeroport7)
-    db.session.add(aeroport8)
-    db.session.add(aeroport9)
-    
-    db.session.add(vol1)
-    db.session.add(vol2)
-    db.session.add(vol3)
-    db.session.add(vol4)
-    db.session.add(vol5)
-    db.session.add(vol6)
-    db.session.add(vol7)
-    
-    db.session.commit()
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+        
+        aeroports = [
+            (456, "Antonio Carlos", "Brésil", "Rio de Janeiro"),
+            (123, "Charles de Gaulle", "France", "Paris"),
+            (100, "Charles de Gaulle", "France", "Paris"),
+            (200, "Schiphol", "Pays-Bas", "Amsterdam"),
+            (300, "Barajas", "Espagne", "Madrid"),
+            (400, "Fiumicino", "Italie", "Rome"),
+            (500, "Heathrow", "Royaume-Uni", "Londres"),
+            (600, "Tegel", "Allemagne", "Berlin"),
+            (700, "John F Kennedy", "USA", "New York")
+        ]
+        
+        for data in aeroports:
+            db.session.add(Aeroport(code=data[0], nom=data[1], pays=data[2], ville=data[3]))
+        
+        vols = [
+            (442, "AirFrance", "2026-02-12T12:34:56", "1", 123, "2026-02-14T14:42:23", "2E", 456),
+            (1, "AirFrance", "2026-03-10T08:00:00", "2A", 100, "2026-03-10T09:30:00", "B", 200),
+            (2, "AirFrance", "2026-03-10T07:45:00", "2B", 100, "2026-03-10T10:00:00", "T1", 300),
+            (3, "Alitalia", "2026-03-10T09:00:00", "1C", 100, "2026-03-10T11:00:00", "T3", 400),
+            (4, "KLM", "2026-03-10T11:00:00", "C", 200, "2026-03-10T12:00:00", "5", 500),
+            (5, "Iberia", "2026-03-10T12:00:00", "T2", 300, "2026-03-10T14:30:00", "A", 600),
+            (6, "BritishAirways", "2026-03-10T15:00:00", "5", 500, "2026-03-10T22:00:00", "4", 700)
+        ]
+        
+        for vol_data in vols:
+            db.session.add(Vol(
+                numero=vol_data[0],
+                compagnie=vol_data[1],
+                tempsD=vol_data[2],
+                terminalD=vol_data[3],
+                codeAeroportD=vol_data[4],
+                tempsA=vol_data[5],
+                terminalA=vol_data[6],
+                codeAeroportA=vol_data[7]
+            ))
+        
+        db.session.commit()
+        print(f"DB OK ! {Aeroport.query.count()} aéroports, {Vol.query.count()} vols")
