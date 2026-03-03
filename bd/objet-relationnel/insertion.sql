@@ -7,7 +7,7 @@ insert into AEROPORT values(
 );
 
 insert into VOL values(
-    442, 'AirFrance', to_timestamp('12/02/2026 12:34:56', 'DD/MM/YYYY HH24:MI:SS'), '1', 123, to_timestamp('14/02/2026 14:42:23', 'DD/MM/YYYY HH24:MI:SS'), '2E', 456, equipageTab(equipage('Goscinny', 'Pilote'), equipage('Uderzo', 'Commissaire'))
+    442, 'AirFrance', to_timestamp('12/02/2026 12:34:56', 'DD/MM/YYYY HH24:MI:SS'), '1', 123, to_timestamp('14/02/2026 14:42:23', 'DD/MM/YYYY HH24:MI:SS'), '2E', 456, equipageTab(equipage('Goscinny', 'Pilote'), equipage('Uderzo', 'Commissaire')), IndiceQualiteListe(IndiceQualite('carbone', 3, 4), IndiceQualite('securite', 4, 5), IndiceQualite('prix', 4, 3))
 );
 
 INSERT INTO AEROPORT VALUES (100, 'Charles de Gaulle', 'France', 'Paris');
