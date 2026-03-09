@@ -1,14 +1,17 @@
 from flask import Flask
+from dotenv import load_dotenv
+import os
 from .extensions import api, db
 from .views import ns
 
-app = Flask(__name__)
-# initialisation de la BD
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
+# Charge les variables d'environnement
+load_dotenv()
 
-# initialisation de restx
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# initialisation
 api.init_app(app)
 db.init_app(app)
-
-# ajout du namespace defini dans views
 api.add_namespace(ns)

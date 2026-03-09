@@ -19,10 +19,6 @@ class Vol(db.Model):
     terminalA = db.Column(db.String(5))
     codeAeroportA = db.Column(db.Integer, db.ForeignKey("aeroport.code"))
 
-    __table_args__ = (
-        db.CheckConstraint("codeAeroportA != codeAeroportD"),
-    )
-
 def get_all_vols():
     return Vol.query.all()
 
