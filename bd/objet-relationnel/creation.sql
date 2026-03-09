@@ -15,14 +15,14 @@ CREATE TYPE equipageTab as table of equipage;
 
 CREATE OR REPLACE TYPE IndiceQualite AS OBJECT (
     nom VARCHAR2(20), valeur INTEGER, poids INTEGER,
-    member FUNCTION get_poids RETURN INTEGER
+    member FUNCTION impact RETURN INTEGER
 );
 /
 CREATE OR REPLACE TYPE BODY IndiceQualite AS
-    member FUNCTION get_poids RETURN INTEGER IS
+    member FUNCTION impact RETURN INTEGER IS
     BEGIN
-    return self.poids;
-    END get_poids;
+    return self.poids * self.valeur;
+    END impact;
 END;
 /
 CREATE TYPE IndiceQualiteListe AS VARRAY(3) OF IndiceQualite;

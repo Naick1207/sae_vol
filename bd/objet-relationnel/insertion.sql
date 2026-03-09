@@ -18,21 +18,21 @@ INSERT INTO VOL VALUES(
 INSERT INTO VOL VALUES(
     1, 'AirFrance', TO_TIMESTAMP('10/03/2026 08:00:00','DD/MM/YYYY HH24:MI:SS'),
     '2A', 100, TO_TIMESTAMP('10/03/2026 09:30:00','DD/MM/YYYY HH24:MI:SS'), 'B', 200,
-    equipageTab(equipage('Lefebvre', 'Pilote'), equipage('Bernard', 'Steward')),
+    equipageTab(equipage('Goscinny', 'Pilote'), equipage('Bernard', 'Steward')),
     IndiceQualiteListe(IndiceQualite('carbone', 4, 2), IndiceQualite('securite', 5, 5), IndiceQualite('prix', 3, 3))
 );
 
 INSERT INTO VOL VALUES(
     2, 'AirFrance', TO_TIMESTAMP('10/03/2026 07:45:00','DD/MM/YYYY HH24:MI:SS'),
     '2B', 100, TO_TIMESTAMP('10/03/2026 10:00:00','DD/MM/YYYY HH24:MI:SS'), 'T1', 300,
-    equipageTab(equipage('Moreau', 'Pilote'), equipage('Petit', 'Co-Pilote')),
+    equipageTab(equipage('Moreau', 'Pilote'), equipage('Petit', 'Co-Pilote'), equipage('Grand', 'Co-Pilote')),
     IndiceQualiteListe(IndiceQualite('carbone', 3, 4), IndiceQualite('securite', 4, 5), IndiceQualite('prix', 2, 3))
 );
 
 INSERT INTO VOL VALUES(
     3, 'Alitalia', TO_TIMESTAMP('10/03/2026 09:00:00','DD/MM/YYYY HH24:MI:SS'),
     '1C', 100, TO_TIMESTAMP('10/03/2026 11:00:00','DD/MM/YYYY HH24:MI:SS'), 'T3', 400,
-    equipageTab(equipage('Bianchi', 'Pilote'), equipage('Rossi', 'Hôtesse')),
+    equipageTab(equipage('Bianchi', 'Pilote'), equipage('Rossi', 'Hotesse')),
     IndiceQualiteListe(IndiceQualite('carbone', 5, 1), IndiceQualite('securite', 4, 5), IndiceQualite('prix', 5, 4))
 );
 
