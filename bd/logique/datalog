@@ -1,0 +1,40 @@
+plusPetit(0, 1).
+plusPetit(1, 2).
+plusPetit(2, 3).
+plusPetit(3, 4).
+plusPetit(4, 5).
+plusPetit(5, 6).
+plusPetit(6, 7).
+plusPetit(7, 8).
+plusPetit(8, 9).
+plusPetit(9, 10).
+plusPetit(10, 11).
+plusPetit(11, 12).
+plusPetit(12, 13).
+plusPetit(13, 14).
+plusPetit(14, 15).
+plusPetit(15, 16).
+plusPetit(16, 17).
+plusPetit(17, 18).
+plusPetit(18, 19).
+plusPetit(19, 20).
+plusPetit(20, 21).
+plusPetit(21, 22).
+plusPetit(22, 23).
+
+plusPetitRec(X, Y) :- plusPetit(X, Y).
+plusPetitRec(X, Y) :- plusPetit(X, Z), plusPetitRec(Z, Y).
+
+vol(paris, rio, 12, 15).
+vol(paris, amsterdam, 8, 10).
+vol(paris, madrid, 8, 10).
+vol(paris, rome, 9, 11).
+vol(amsterdam, londres, 11, 12).
+vol(madrid, berlin, 12, 15).
+vol(londres, new-york, 15, 22).
+
+correspondance(Dep, Arr, HD, HA) :- vol(Dep, Arr, HD, HA).
+correspondance(Dep, Arr, HD, HA) :- vol(Dep, X, HD, HA_1), plusPetitRec(HA_1, HD_1), correspondance(X, Arr, HD_1, HA).
+
+correspondances_impaires(Dep, Arr, HD, HA) :- vol(Dep, X, HD, HA_1), vol(X, Arr, HD_1, HA), plusPetitRec(HA_1, HD_1).
+correspondances_impaires(Dep, Arr, HD, HA) :- vol(Dep, X, HD, HA_1), vol(X, Y, HD_1, HA_2), plusPetitRec(HA_1, HD_1), plusPetitRec(HA_2, HD_2), correspondances_impaires(Y, Arr, HD_2, HA).
