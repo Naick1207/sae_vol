@@ -1,5 +1,5 @@
 // js/views/vols.js
-import { getData } from '../service/api.js';
+import { getData } from '../../service/api.js';
 
 export async function renderVols() {
     const vols = await getData('/api/Vols'); // Appelle ta route Python
@@ -28,8 +28,8 @@ export async function renderVols() {
                             <td>${v.tempsA.replace('T', ' ')}</td>
                             <td><span class="badge">${v.terminalD}</span></td>
                             <td>
-                                <button class="btn-icon">✏️</button>
-                                <button class="btn-icon">🗑️</button>
+                                <button onclick="editVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">✏️</button>
+                                <button onclick="removeVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">🗑️</button>
                             </td>
                         </tr>
                     `).join('')}

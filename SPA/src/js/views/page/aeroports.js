@@ -1,5 +1,5 @@
 // js/views/aeroports.js
-import { getData } from '../service/api.js';
+import { getData } from '../../service/api.js';
 
 export async function renderAeroports() {
     const aeroports = await getData('/api/Aeroports'); //
