@@ -1,8 +1,7 @@
-// js/views/aeroports.js
 import { getData } from '../../service/api.js';
 
 export async function renderAeroports() {
-    const aeroports = await getData('/api/Aeroports'); //
+    const aeroports = await getData('/api/Aeroports');
 
     if (aeroports.length === 0) return `<p class="empty">Aucun aéroport répertorié.</p>`;
 
@@ -11,11 +10,7 @@ export async function renderAeroports() {
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>CODE</th>
-                        <th>NOM</th>
-                        <th>VILLE</th>
-                        <th>PAYS</th>
-                        <th>ACTIONS</th>
+                        <th>CODE</th><th>NOM</th><th>VILLE</th><th>PAYS</th><th>ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,8 +21,8 @@ export async function renderAeroports() {
                             <td>${a.ville}</td>
                             <td>${a.pays}</td>
                             <td>
-                                <button class="btn-icon">✏️</button>
-                                <button class="btn-icon">🗑️</button>
+                                <button class="btn-icon" onclick="editAeroport('${a.code}')">✏️</button>
+                                <button class="btn-icon" onclick="removeAeroport('${a.code}')">🗑️</button>
                             </td>
                         </tr>
                     `).join('')}
