@@ -1,63 +1,554 @@
+/* ==========================================================================
+   WILSON COMPAGNIE - GLOBAL STYLES
+   Inspired by Sky Desk Mockups
+   Thème : Sombre, Moderne, Professionnel
+   ========================================================================== */
+
+/* --- Variables --- */
 :root {
-    --bg-app: #0f111a;
-    --bg-sidebar: #1a1c25;
-    --text-main: #ffffff;
-    --accent: #4a90e2;
+    /* Couleurs de fond */
+    --bg-app: #090a10; /* Fond principal de l'application */
+    --bg-sidebar: #0f1118; /* Fond de la sidebar */
+    --bg-card: #111827; /* Fond des cartes et du tableau */
+    --bg-input: #1e293b; /* Fond des champs de formulaire */
+    
+    /* Couleurs de texte */
+    --text-main: #ffffff; /* Texte principal (blanc) */
+    --text-sec: #8085a6; /* Texte secondaire (gris-bleu) */
+    --text-active: #ffffff; /* Texte pour l'élément actif de la navigation */
+    
+    /* Couleurs d'accent */
+    --accent: #3b82f6; /* Bleu vif (boutons primaires, liens) */
+    --accent-hov: #1d4ed8; /* Bleu plus sombre pour le survol */
+    
+    /* Couleurs de statut */
+    --status-green: #10b981; /* À l'heure */
+    --status-green-bg: #064e3b; /* Fond À l'heure */
+    --status-orange: #f59e0b; /* Retardé */
+    --status-orange-bg: #78350f; /* Fond Retardé */
+    --status-red: #ef4444; /* Annulé */
+    --status-red-bg: #7f1d1d; /* Fond Annulé */
+    
+    /* Bordures */
+    --border: #1e293b; /* Bordure par défaut */
+    --border-hov: #334155; /* Bordure au survol */
+    
+    /* Police */
+    --font: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
 }
 
-body { margin: 0; background-color: var(--bg-app); color: var(--text-main); font-family: sans-serif; }
+/* --- Reset & Base --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-.app-container { display: flex; height: 100vh; }
+body {
+    font-family: var(--font);
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
 
-.sidebar { width: 250px; background-color: var(--bg-sidebar); padding: 20px; }
-.logo { font-size: 1.2rem; font-weight: bold; margin-bottom: 2rem; }
-.sidebar nav ul { list-style: none; padding: 0; }
-.sidebar nav a { color: #a0a0a0; text-decoration: none; display: block; padding: 10px 0; }
+/* ==========================================================================
+   LAYOUT
+   ========================================================================== */
 
-.main-wrapper { flex-grow: 1; display: flex; flex-direction: column; }
+.app-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
 
-#page-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid #2d3142; }
+.main-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
 
-.btn-primary { background-color: var(--accent); color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 0.9rem; }
+#content {
+    padding: 2.5rem 3.5rem;
+    flex: 1;
+}
 
-/* --- MODALE --- */
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+
+.sidebar {
+    width: 280px;
+    background-color: var(--bg-sidebar);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    padding-bottom: 2rem;
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    padding: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.logo span { font-weight: 400; }
+
+.navigation {
+    flex: 1;
+    padding: 0 1rem;
+}
+
+.nav-group-title {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: var(--text-sec);
+    margin: 2.5rem 0 1rem;
+    padding-left: 1rem;
+}
+
+.sidebar nav ul { list-style: none; }
+
+.sidebar nav a {
+    color: var(--text-sec);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: background 0.2s, color 0.2s;
+    font-weight: 500;
+}
+
+.sidebar nav a.active {
+    background-color: var(--accent-hov);
+    color: var(--text-active);
+}
+
+.sidebar nav a:hover:not(.active) {
+    background-color: var(--bg-input);
+    color: var(--text-main);
+}
+
+/* Icônes de navigation */
+.sidebar nav a .icon {
+    font-size: 1.2rem;
+}
+
+.nav-footer {
+    padding: 0 1rem;
+    margin-top: auto;
+}
+
+/* ==========================================================================
+   PAGE HEADER
+   ========================================================================== */
+
+#page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+#header-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* ==========================================================================
+   BOUTONS (GLOBAL)
+   ========================================================================== */
+
+.btn-primary {
+    background-color: var(--accent);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.btn-primary:hover { background-color: var(--accent-hov); }
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-main);
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border 0.2s;
+}
+.btn-secondary:hover { border-color: var(--border-hov); }
+
+/* ==========================================================================
+   DASHBOARD CARDS
+   ========================================================================== */
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+}
+
+.card-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-sec);
+    margin-bottom: 1rem;
+}
+
+.card-value {
+    font-size: 2.75rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+.card-subtitle {
+    font-size: 0.9rem;
+}
+.text-green { color: var(--status-green); }
+.text-orange { color: var(--status-orange); }
+.text-red { color: var(--status-red); }
+
+/* ==========================================================================
+   FILTRES (RECHERCHE & SELECTS)
+   ========================================================================== */
+
+.filters-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    gap: 1.5rem;
+}
+
+.search-container {
+    position: relative;
+    flex: 1;
+}
+.search-container input {
+    width: 100%;
+    background-color: var(--bg-input);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 0.85rem 1rem 0.85rem 3rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+.search-icon {
+    position: absolute;
+    left: 1.15rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-sec);
+    font-size: 1rem;
+}
+
+.select-filters {
+    display: flex;
+    gap: 1.5rem;
+}
+.select-filters select {
+    background-color: var(--bg-input);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 0.85rem 2rem 0.85rem 1.15rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    appearance: none; /* Cache la flèche par défaut */
+}
+
+.reset-btn {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 0.85rem 1.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+.reset-btn:hover { border-color: var(--border-hov); }
+
+/* ==========================================================================
+   TABLEAU DE DONNÉES (`table.data-table`)
+   ========================================================================== */
+
+.table-container {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead {
+    background-color: var(--bg-sidebar);
+}
+
+.data-table th {
+    text-align: left;
+    text-transform: uppercase;
+    color: var(--text-sec);
+    font-size: 0.8rem;
+    padding: 1.75rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+}
+.data-table tbody tr:hover { background-color: #1a2333; }
+.data-table tbody tr:last-child { border-bottom: none; }
+
+.data-table td {
+    padding: 1.5rem 1.25rem;
+    vertical-align: middle;
+}
+
+/* Styles spécifiques aux colonnes des vols */
+.col-id { color: var(--accent); font-weight: 600; }
+.col-compagnie { color: var(--text-main); font-weight: 600; }
+
+.location-cell, .datetime-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+.code { font-weight: 600; color: var(--text-main); }
+.city-country, .date { color: var(--text-sec); font-size: 0.85rem; }
+.time { font-weight: 600; color: var(--text-main); }
+
+.col-terminal { color: var(--text-main); font-weight: 600; }
+
+/* Styles spécifiques aux colonnes des aéroports */
+.col-code-iata { color: var(--accent); font-weight: 600; }
+.col-nom-aeroport { color: var(--text-main); font-weight: 600; }
+
+/* Statuts */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.status-active {
+    background-color: var(--status-green-bg);
+    color: var(--status-green);
+}
+.status-delayed {
+    background-color: var(--status-orange-bg);
+    color: var(--status-orange);
+}
+.status-cancelled {
+    background-color: var(--status-red-bg);
+    color: var(--status-red);
+}
+
+/* Actions */
+.actions-cell {
+    display: flex;
+    gap: 0.75rem;
+}
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-sec);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.6rem;
+    border-radius: 8px;
+    transition: color 0.2s, background 0.2s;
+}
+.btn-icon:hover {
+    color: var(--text-main);
+    background-color: var(--bg-input);
+}
+
+/* ================= =========================================================
+   PAGINATION
+   ========================================================================== */
+
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 0 1rem;
+}
+
+.pagination-info {
+    font-size: 0.9rem;
+    color: var(--text-sec);
+}
+
+.pagination-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+.pagination-btn {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1.15rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.pagination-btn:hover:not(.active) { border-color: var(--border-hov); }
+.pagination-btn.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+/* ==========================================================================
+   MODALE (`#modal-container`, `#modal-content`)
+   ========================================================================== */
+
 #modal-container {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    padding: 2rem;
 }
 
 #modal-content {
-    background: var(--bg-sidebar);
-    padding: 2rem;
-    border-radius: 8px;
+    background-color: var(--bg-card);
+    padding: 3rem;
+    border-radius: 16px;
     width: 100%;
-    max-width: 500px;
+    max-width: 700px;
+    position: relative;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.modal-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-size: 1.75rem;
+    cursor: pointer;
 }
 
 .hidden { display: none !important; }
 
-/* --- FORMULAIRE --- */
+/* ================= =========================================================
+   FORMULAIRES (`.form-vols`)
+   ========================================================================== */
+
 .form-vols {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.75rem;
+}
+
+.form-section-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--text-sec);
+    font-weight: 600;
+    margin: 1.75rem 0 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.6rem;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-sec);
+    font-weight: 600;
+}
+
+.form-vols input, .form-vols select {
+    background-color: var(--bg-input);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 0.9rem 1.15rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    width: 100%;
+}
+.form-vols input:focus, .form-vols select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.locked-input {
+    background-color: var(--bg-card);
+    color: #777;
+    cursor: not-allowed;
+    border-color: #334155;
 }
 
 .form-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 1.5rem;
-}   
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 3rem;
+}

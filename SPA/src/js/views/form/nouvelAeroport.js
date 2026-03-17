@@ -4,11 +4,13 @@ export function renderFormAeroport(aero = null) {
         <form id="form-aeroport" class="form-vols">
             ${aero ? '<input type="hidden" name="is_edit" value="true">' : ''}
             
+            ${aero ? `
             <div class="form-group">
-                <label>Code IATA (Ex: CDG)</label>
-                <input type="number" name="code" placeholder="Code" 
-                       value="${aero?.code || ''}" ${aero ? 'readonly' : ''} required>
+                <label>Code de l'aéroport (Non modifiable)</label>
+                <input type="number" name="code" value="${aero.code}" readonly class="locked-input">
             </div>
+            ` : ''}
+            
             <div class="form-group">
                 <label>Nom de l'aéroport</label>
                 <input type="text" name="nom" placeholder="Nom" value="${aero?.nom || ''}" required>

@@ -54,7 +54,7 @@ class AeroportCollection(Resource):
         aeroport = create_aeroport(**ns.payload)
         return aeroport, 201
 
-@ns.route("/Aeroports/<int:code>")
+@ns.route("/Aeroport/<int:code>")
 @ns.response(404, "Aeroport not found")
 class AeroportItem(Resource):
     @ns.marshal_with(aeroport_model)

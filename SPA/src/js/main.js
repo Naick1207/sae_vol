@@ -27,7 +27,7 @@ async function router() {
         contentDiv.innerHTML = await renderVols();
     } 
     else if (hash === '#/Aeroports') {
-        setupHeader('Aéroports', '<button class="btn-primary" onclick="showAddAeroportForm()">+ Nouvel Aéroport</button>');
+        setupHeader('Aéroports', '<button class="btn-primary" onclick="showAddAeroportForm()">+ Ajouter Aéroport</button>');
         contentDiv.innerHTML = await renderAeroports();
     } 
     else {
@@ -36,7 +36,17 @@ async function router() {
     }
 }
 
-// --- GESTION DE LA MODALE (COMMUN) ---
+// --- GESTION DES MODALES ---
+window.showAddVolForm = () => {
+    modalContent.innerHTML = renderFormVol();
+    modal.classList.remove('hidden');
+};
+
+window.showAddAeroportForm = () => {
+    modalContent.innerHTML = renderFormAeroport();
+    modal.classList.remove('hidden');
+};
+
 window.closeModal = () => {
     modal.classList.add('hidden');
     modalContent.innerHTML = '';
@@ -46,40 +56,27 @@ modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
 });
 
-// --- LOGIQUE VOLS ---
-window.showAddVolForm = () => {
-    modalContent.innerHTML = renderFormVol();
-    modal.classList.remove('hidden');
-};
-
-window.editVol = async (num, comp, date) => {
-    const vol = await getData(`/api/Vol/${num}/${comp}/${date}`);
-    if (vol) {
-        modalContent.innerHTML = renderFormVol(vol);
-        modal.classList.remove('hidden');
-    }
-};
-
-window.removeVol = async (num, comp, date) => {
-    if (confirm(`Supprimer le vol ${num} (${comp}) ?`)) {
-        const success = await deleteData(`/api/Vol/${num}/${comp}/${date}`);
-        if (success) router(); 
-    }
-};
-
-// --- LOGIQUE AÉROPORTS ---
-window.showAddAeroportForm = () => {
-    modalContent.innerHTML = renderFormAeroport();
-    modal.classList.remove('hidden');
-};
+// --- ACTIONS CRUD : MODIFICATION (Pré-remplissage) ---
 
 window.editAeroport = async (code) => {
+    // Route singulière /api/Aeroport/ sans 's' pour la modif/get unique
     const aero = await getData(`/api/Aeroport/${code}`);
     if (aero) {
         modalContent.innerHTML = renderFormAeroport(aero);
         modal.classList.remove('hidden');
     }
 };
+
+window.editVol = async (num, comp, date) => {
+    const encodedDate = encodeURIComponent(date);
+    const vol = await getData(`/api/Vol/${num}/${comp}/${encodedDate}`);
+    if (vol) {
+        modalContent.innerHTML = renderFormVol(vol);
+        modal.classList.remove('hidden');
+    }
+};
+
+// --- ACTIONS CRUD : SUPPRESSION ---
 
 window.removeAeroport = async (code) => {
     if (confirm(`Supprimer l'aéroport ${code} ?`)) {
@@ -88,33 +85,55 @@ window.removeAeroport = async (code) => {
     }
 };
 
-// --- ÉCOUTEUR DE SOUMISSION UNIQUE ---
+window.removeVol = async (num, comp, date) => {
+    if (confirm(`Supprimer le vol ${num} (${comp}) ?`)) {
+        const encodedDate = encodeURIComponent(date);
+        const success = await deleteData(`/api/Vol/${num}/${comp}/${encodedDate}`);
+        if (success) router(); 
+    }
+};
+
+// --- ACTIONS CRUD : ENREGISTREMENT (SOUMISSION) ---
+
 document.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const formId = e.target.id;
     const payload = formToJSON(e.target);
-    const isEdit = e.target.querySelector('input[name="is_edit"]'); // Détecte si c'est une modification
+    const isEdit = e.target.querySelector('input[name="is_edit"]');
 
     let result = null;
 
     if (formId === 'form-vol') {
-        // Mode PUT (Modif) ou POST (Ajout) pour les Vols
-        result = isEdit ? await putData('/api/Vols', payload) : await postData('/api/Vols', payload);
+        if (isEdit) {
+            // On sépare les clés de l'URL du reste des données pour éviter l'erreur 500 (modif PK interdite)
+            const { numero, compagnie, tempsD, is_edit, ...updateBody } = payload;
+            const encodedDate = encodeURIComponent(tempsD);
+            const url = `/api/Vol/${numero}/${compagnie}/${encodedDate}`;
+            result = await putData(url, updateBody);
+        } else {
+            result = await postData('/api/Vols', payload);
+        }
     } 
     else if (formId === 'form-aeroport') {
-        // Mode PUT (Modif) ou POST (Ajout) pour les Aéroports
-        result = isEdit ? await putData('/api/Aeroports', payload) : await postData('/api/Aeroports', payload);
+        if (isEdit) {
+            // On sépare le code (PK) pour ne pas l'envoyer dans le body du PUT
+            const { code, is_edit, ...updateBody } = payload;
+            const url = `/api/Aeroport/${code}`;
+            result = await putData(url, updateBody);
+        } else {
+            result = await postData('/api/Aeroports', payload);
+        }
     }
 
     if (result) {
         closeModal();
         router();
     } else {
-        alert("Erreur lors de l'enregistrement. Vérifiez vos données.");
+        alert("Erreur lors de l'enregistrement. Vérifiez la console serveur (500) ou réseau (404/405).");
     }
 });
 
-// --- INITIALISATION ---
+// Initialisation
 window.addEventListener('hashchange', router);
-window.addEventListener('DOMContentLoaded', router);
+window.addEventListener('load', router);

@@ -2,8 +2,9 @@ export function formToJSON(formElement) {
     const formData = new FormData(formElement);
     const data = Object.fromEntries(formData.entries());
 
-    // Conversion automatique des champs numériques pour éviter l'erreur 400
-    const numericFields = ['numero', 'codeAeroportD', 'codeAeroportA'];
+    // AJOUTE 'code' et 'numero' ICI
+    const numericFields = ['code', 'numero', 'codeAeroportD', 'codeAeroportA'];
+    
     numericFields.forEach(field => {
         if (data[field]) data[field] = parseInt(data[field]);
     });

@@ -33,12 +33,14 @@ export async function postData(endpoint, data) {
 
 export async function deleteData(endpoint) {
     try {
-        const response = await fetch(`${API_BASE}${endpoint}`, {
-            method: 'DELETE'
+        // Remplace BASE_URL par API_BASE
+        const response = await fetch(`${API_BASE}${endpoint}`, { 
+            method: 'DELETE' 
         });
         
-        // Le DELETE ne renvoie pas de JSON, juste un code statut 204
-        return response.status === 204 || response.ok;
+        // Attention : Flask-Restx renvoie souvent 204 (No Content) 
+        // ou 200 (OK) après une suppression. On accepte les deux.
+        return response.ok; 
     } catch (error) {
         console.error("Erreur lors de la suppression :", error);
         return false;
