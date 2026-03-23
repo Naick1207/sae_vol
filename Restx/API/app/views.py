@@ -26,7 +26,7 @@ class VolCollection(Resource):
             
         return result
 
-    @ns.expect(vol_model_input)
+    @ns.expect(vol_model)
     @ns.marshal_with(vol_model)
     def post(self):
         vol = create_vol(**ns.payload)
