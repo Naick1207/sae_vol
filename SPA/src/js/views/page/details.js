@@ -1,3 +1,4 @@
+
 export function renderDetailsVol(v) {
     return `
         <div class="modal-header">
@@ -6,11 +7,18 @@ export function renderDetailsVol(v) {
         </div>
         <div class="details-grid">
             <div class="detail-item"><strong>Compagnie:</strong> ${v.compagnie}</div>
-            <div class="detail-item"><strong>Départ:</strong> ${v.tempsD.replace('T', ' à ')} (Terminal ${v.terminalD})</div>
-            <div class="detail-item"><strong>Aéroport Départ:</strong> Code ${v.codeAeroportD}</div>
+            <div class="detail-item">
+                <strong>Départ:</strong> ${v.nom_dep} <br>
+                <small>${v.tempsD.replace('T', ' à ')} (Terminal ${v.terminalD})</small>
+            </div>
             <hr>
-            <div class="detail-item"><strong>Arrivée:</strong> ${v.tempsA.replace('T', ' à ')} (Terminal ${v.terminalA})</div>
-            <div class="detail-item"><strong>Aéroport Arrivée:</strong> Code ${v.codeAeroportA}</div>
+            <div class="detail-item">
+                <strong>Arrivée:</strong> ${v.nom_arr} <br>
+                <small>${v.tempsA.replace('T', ' à ')} (Terminal ${v.terminalA})</small>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn-secondary" onclick="closeModal()">Fermer</button>
         </div>
     `;
 }

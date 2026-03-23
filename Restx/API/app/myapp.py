@@ -14,15 +14,15 @@ app = Flask(__name__)
 CORS(app)
 
 # Configuration de la base de données
-#app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-#app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # On définit le chemin de la base de données (ici à la racine du projet)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Configuration pour un fichier .db local
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "data.db")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+#app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "data.db")
+#app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # initialisation
 api.init_app(app)

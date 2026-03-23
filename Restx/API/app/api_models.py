@@ -6,9 +6,11 @@ vol_model = api.model("Vol", {
     "compagnie": fields.String,
     "tempsD": fields.String,
     "terminalD": fields.String,
-    "codeAeroportD": fields.Integer,
+    "aeroportD": fields.String,
     "tempsA": fields.String,
     "terminalA": fields.String,
+    "aeroportA": fields.String,
+    "codeAeroportD": fields.Integer,
     "codeAeroportA": fields.Integer
 })
 

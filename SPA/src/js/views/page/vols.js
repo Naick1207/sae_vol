@@ -24,13 +24,19 @@ export async function renderVols() {
                         <tr>
                             <td>${v.numero}</td>
                             <td>${v.compagnie}</td>
-                            <td>${v.tempsD.replace('T', ' ')}</td>
-                            <td>${v.tempsA.replace('T', ' ')}</td>
-                            <td><span class="badge">${v.terminalD}</span></td>
                             <td>
-                                <button class="btn-icon" title="Voir" onclick="viewVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">👁️</button
-                                <button onclick="editVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">✏️</button>
-                                <button onclick="removeVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">🗑️</button>
+                                <strong>${v.aeroportD}</strong><br>
+                                <small>${v.tempsD.replace('T', ' ')}</small>
+                            </td>
+                            <td>
+                                <strong>${v.aeroportA}</strong><br>
+                                <small>${v.tempsA.replace('T', ' ')}</small>
+                            </td>
+                            <td><span class="badge">${v.terminalD}</span></td>
+                            <td class="actions-cell">
+                                <button class="btn-icon" title="Voir" onclick="viewVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">👁️</button>
+                                <button class="btn-icon" title="Modifier" onclick="editVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">✏️</button>
+                                <button class="btn-icon" title="Supprimer" onclick="removeVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">🗑️</button>
                             </td>
                         </tr>
                     `).join('')}
