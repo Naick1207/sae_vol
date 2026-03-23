@@ -6,25 +6,25 @@ vol_model = api.model("Vol", {
     "compagnie": fields.String,
     "tempsD": fields.String,
     "terminalD": fields.String,
-    "codeAeroportD": fields.Integer,
-    "tempsA": fields.String,
-    "terminalA": fields.String,
-    "codeAeroportA": fields.Integer
-})
-
-# api_models.py
-vol_model = api.model("Vol", {
-    "numero": fields.Integer,
-    "compagnie": fields.String,
-    "tempsD": fields.String,
-    "terminalD": fields.String,
     "aeroportD": fields.String,
     "tempsA": fields.String,
     "terminalA": fields.String,
     "aeroportA": fields.String,
-    "codeAeroportD": fields.Integer, 
+    "codeAeroportD": fields.Integer,
     "codeAeroportA": fields.Integer
 })
+
+vol_model_input = api.model("VolInput", {
+    "numero": fields.Integer(required=True),
+    "compagnie": fields.String(required=True),
+    "tempsD": fields.String(required=True),
+    "terminalD": fields.String(required=True),
+    "codeAeroportD": fields.Integer(required=True),
+    "tempsA": fields.String(required=True),
+    "terminalA": fields.String(required=True),
+    "codeAeroportA": fields.Integer(required=True)
+})
+
 vol_update_model_input = api.model("VolUpdateInput", {
     "terminalD": fields.String,
     "codeAeroportD": fields.Integer,
