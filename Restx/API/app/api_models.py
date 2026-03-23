@@ -12,7 +12,6 @@ vol_model = api.model("Vol", {
     "codeAeroportA": fields.Integer
 })
 
-# api_models.py
 vol_model = api.model("Vol", {
     "numero": fields.Integer,
     "compagnie": fields.String,
