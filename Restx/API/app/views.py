@@ -1,6 +1,7 @@
 from flask_restx import Resource, Namespace, abort
 from .models import *
 from .api_models import *
+from sqlalchemy.orm import aliased
 
 ns = Namespace("api")
 
@@ -8,7 +9,22 @@ ns = Namespace("api")
 class VolCollection(Resource):
     @ns.marshal_list_with(vol_model)
     def get(self):
-        return get_all_vols()
+        AeroDep = aliased(Aeroport)
+        AeroArr = aliased(Aeroport)
+        query = db.session.query(
+            Vol, 
+            AeroDep.nom.label('nom_dep'), 
+            AeroArr.nom.label('nom_arr')
+        ).join(AeroDep, Vol.codeAeroportD == AeroDep.code)\
+         .join(AeroArr, Vol.codeAeroportA == AeroArr.code).all()
+        result = []
+        for vol, nom_d, nom_a in query:
+            vol_dict = vol.__dict__
+            vol_dict['aeroportD'] = nom_d
+            vol_dict['aeroportA'] = nom_a
+            result.append(vol_dict)
+            
+        return result
 
     @ns.expect(vol_model_input)
     @ns.marshal_with(vol_model)
