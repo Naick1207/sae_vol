@@ -1,9 +1,11 @@
+import { formToJSON } from './utils.js';
 import { renderVols } from './views/page/vols.js';
 import { renderAeroports } from './views/page/aeroports.js';
 import { renderFormVol } from './views/form/nouveauVol.js';
 import { renderFormAeroport } from './views/form/nouvelAeroport.js'; 
 import { postData, deleteData, putData, getData } from './service/api.js';
-import { formToJSON } from './utils.js';
+import { renderDetailsVol, renderDetailsAeroport } from './views/page/details.js';
+
 
 // --- ÉLÉMENTS DOM ---
 const contentDiv = document.getElementById('content');
@@ -133,6 +135,24 @@ document.addEventListener('submit', async (e) => {
         alert("Erreur lors de l'enregistrement. Vérifiez la console serveur (500) ou réseau (404/405).");
     }
 });
+
+// --- ACTIONS CRUD : Consultation (SOUMISSION) ---
+window.viewVol = async (num, comp, date) => {
+    const encodedDate = encodeURIComponent(date);
+    const vol = await getData(`/api/Vol/${num}/${comp}/${encodedDate}`);
+    if (vol) {
+        modalContent.innerHTML = renderDetailsVol(vol);
+        modal.classList.remove('hidden');
+    }
+};
+
+window.viewAeroport = async (code) => {
+    const aero = await getData(`/api/Aeroport/${code}`);
+    if (aero) {
+        modalContent.innerHTML = renderDetailsAeroport(aero);
+        modal.classList.remove('hidden');
+    }
+};
 
 // Initialisation
 window.addEventListener('hashchange', router);

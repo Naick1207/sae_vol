@@ -552,3 +552,24 @@ body {
     gap: 1rem;
     margin-top: 3rem;
 }
+
+/* ================= =========================================================
+   FORMULAIRES (`.details-vol`, `.details-aeroport`)
+   ========================================================================== */
+
+   .details-grid {
+    display: grid;
+    gap: 1.5rem;
+    color: var(--text-main);
+}
+.detail-item {
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+}
+.detail-item strong {
+    color: var(--text-sec);
+    margin-right: 1rem;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}

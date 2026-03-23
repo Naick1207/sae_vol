@@ -15,7 +15,7 @@ export async function renderVols() {
                         <th>COMPAGNIE</th>
                         <th>DÉPART</th>
                         <th>ARRIVÉE</th>
-                        <th>TERMINAL</th>
+                        <th>TERMINAL DEP</th>
                         <th>ACTIONS</th>
                     </tr>
                 </thead>
@@ -28,6 +28,7 @@ export async function renderVols() {
                             <td>${v.tempsA.replace('T', ' ')}</td>
                             <td><span class="badge">${v.terminalD}</span></td>
                             <td>
+                                <button class="btn-icon" title="Voir" onclick="viewVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">👁️</button
                                 <button onclick="editVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">✏️</button>
                                 <button onclick="removeVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">🗑️</button>
                             </td>
