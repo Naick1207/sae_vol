@@ -4,24 +4,22 @@ export function renderFormAeroport(aero = null) {
         <form id="form-aeroport" class="form-vols">
             ${aero ? '<input type="hidden" name="is_edit" value="true">' : ''}
             
-            ${aero ? `
             <div class="form-group">
-                <label>Code de l'aéroport (Non modifiable)</label>
-                <input type="number" name="code" value="${aero.code}" readonly class="locked-input">
+                <label>Code de l'aéroport</label>
+                <input type="number" name="code" value="${aero ? aero.code : ''}" ${aero ? 'readonly class="locked-input"' : 'required'}>
             </div>
-            ` : ''}
             
             <div class="form-group">
                 <label>Nom de l'aéroport</label>
-                <input type="text" name="nom" placeholder="Nom" value="${aero?.nom || ''}" required>
+                <input type="text" name="nom" placeholder="Nom" value="${aero ? (aero.nom || '') : ''}" required>
             </div>
             <div class="form-group">
                 <label>Ville</label>
-                <input type="text" name="ville" placeholder="Ville" value="${aero?.ville || ''}" required>
+                <input type="text" name="ville" placeholder="Ville" value="${aero ? (aero.ville || '') : ''}" required>
             </div>
             <div class="form-group">
                 <label>Pays</label>
-                <input type="text" name="pays" placeholder="Pays" value="${aero?.pays || ''}" required>
+                <input type="text" name="pays" placeholder="Pays" value="${aero ? (aero.pays || '') : ''}" required>
             </div>
             
             <div class="form-actions">

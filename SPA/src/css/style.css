@@ -353,6 +353,16 @@ body {
 /* Styles spécifiques aux colonnes des aéroports */
 .col-code-iata { color: var(--accent); font-weight: 600; }
 .col-nom-aeroport { color: var(--text-main); font-weight: 600; }
+/* Style pour le bouton supprimé désactivé */
+.btn-disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    filter: grayscale(1);
+}
+
+.btn-disabled:hover {
+    background: transparent; /* Empêche l'effet de survol */
+}
 
 /* Statuts */
 .status-badge {

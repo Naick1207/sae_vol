@@ -1,7 +1,11 @@
 import { getData } from '../../service/api.js';
 
 export async function renderAeroports() {
-    const aeroports = await getData('/api/Aeroports');
+    // On récupère les deux listes
+    const [aeroports, vols] = await Promise.all([
+        getData('/api/Aeroports'),
+        getData('/api/Vols')
+    ]);
 
     if (aeroports.length === 0) return `<p class="empty">Aucun aéroport répertorié.</p>`;
 
@@ -14,18 +18,30 @@ export async function renderAeroports() {
                     </tr>
                 </thead>
                 <tbody>
-                    ${aeroports.map(a => `
+                    ${aeroports.map(a => {
+                        const estUtilise = vols.some(v => 
+                            v.codeAeroportD === a.code || v.codeAeroportA === a.code
+                        );
+
+                        return `
                         <tr>
                             <td><strong>${a.code}</strong></td>
                             <td>${a.nom}</td>
                             <td>${a.ville}</td>
                             <td>${a.pays}</td>
                             <td>
-                                <button class="btn-icon" onclick="editAeroport('${a.code}')">✏️</button>
-                                <button class="btn-icon" onclick="removeAeroport('${a.code}')">🗑️</button>
+                                <button class="btn-icon" title="Voir" onclick="viewAeroport('${a.code}')">👁️</button>
+                                <button class="btn-icon" onclick="editAeroport('${a.code}')" title="Modifier">✏️</button>
+                                
+                                <button class="btn-icon ${estUtilise ? 'btn-disabled' : ''}" 
+                                        ${estUtilise ? 'disabled title="Impossible de supprimer : des vols sont rattachés"' : 'title="Supprimer"'} 
+                                        onclick="removeAeroport('${a.code}')">
+                                    🗑️
+                                </button>
                             </td>
                         </tr>
-                    `).join('')}
+                        `;
+                    }).join('')}
                 </tbody>
             </table>
         </div>
