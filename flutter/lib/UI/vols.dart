@@ -20,9 +20,17 @@ class Vols extends StatelessWidget{
           final vols = snapshot.data!;
           return ListView.builder(
             itemCount: vols.length,
-            itemBuilder: (context, index) => ListTile(
-              title: Text(vols[index].numero.toString()),
-            ),
+            itemBuilder: (context, index) {
+              final vol = vols[index];
+              return ListTile(
+                leading: CircleAvatar(
+                  child: Text(vol.numero.toString()),
+                ),
+                title: Text('${vol.aeroportD} -> ${vol.aeroportA}'),
+                subtitle: Text('${vol.compagnie} | Départ: ${vol.tempsD} (T${vol.terminalD}) | Arrivée: ${vol.tempsA} (T${vol.terminalA})'),
+                trailing: Text('${vol.codeAeroportD} -> ${vol.codeAeroportA}'),
+              );
+            },
           );
           }
         );

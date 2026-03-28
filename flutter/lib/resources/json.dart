@@ -1,13 +1,11 @@
 import 'dart:convert';
-
+import '../config.dart';
 import 'package:http/http.dart' as http;
 import '../API/Vol.dart';
 
-const lien = 'http://localhost:5000';
-
 Future<List<Vol>> getVols() async{
   final response = await http.get(
-    Uri.parse('$lien/Vols'),
+    Uri.parse('${Config.apiUrl}/api/Vols'),
     headers: {'Accept' : 'application/json'},
   );
 

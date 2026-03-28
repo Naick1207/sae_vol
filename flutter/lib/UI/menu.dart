@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'accueil.dart';
+import 'vols.dart';
 
 class Menu extends StatefulWidget {
   const Menu({super.key});
@@ -13,7 +14,7 @@ class _MenuState extends State<Menu> {
 
   final List<Widget> _pages = [
     const Accueil(),
-    const Center(child: Text("Vols")),
+    const Vols(),
     const Center(child: Text("Correspondances")),
     const Center(child: Text("Aéroports")),
   ];
