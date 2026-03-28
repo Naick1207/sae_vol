@@ -1,3 +1,6 @@
+import 'Aeroport.dart';
+import '../resources/json.dart';
+
 class Vol {
   final int numero;
   final String compagnie;
@@ -10,7 +13,10 @@ class Vol {
   final int codeAeroportD;
   final int codeAeroportA;
 
-  const Vol({required this.numero,
+  Aeroport? aeroportDepart;
+  Aeroport? aeroportArrivee;
+
+  Vol({required this.numero,
     required this.compagnie,
     required this.tempsD,
     required this.terminalD,
@@ -19,7 +25,15 @@ class Vol {
     required this.terminalA,
     required this.aeroportA,
     required this.codeAeroportD,
-    required this.codeAeroportA, });
+    required this.codeAeroportA,
+    this.aeroportDepart,
+    this.aeroportArrivee
+  });
+
+  Future<void> chargerAeroports() async {
+    aeroportDepart = await getAeroport(codeAeroportD);
+    aeroportArrivee = await getAeroport(codeAeroportA);
+  }
 
   factory Vol.fromJson(Map<String, dynamic> json){
     return switch(json){

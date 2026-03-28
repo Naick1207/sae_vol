@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'accueil.dart';
 import 'vols.dart';
+import 'aeroports.dart';
 
 class Menu extends StatefulWidget {
   const Menu({super.key});
@@ -16,7 +17,7 @@ class _MenuState extends State<Menu> {
     const Accueil(),
     const Vols(),
     const Center(child: Text("Correspondances")),
-    const Center(child: Text("Aéroports")),
+    const Aeroports(),
   ];
 
   @override
