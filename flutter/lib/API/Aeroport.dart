@@ -25,7 +25,7 @@ class Aeroport {
         pays: pays,
         ville: ville
       ),
-      _ => throw const FormatException('Ca marche pas =(')
+      _ => throw const FormatException('Ca marche pas :(')
     };
   }
 }

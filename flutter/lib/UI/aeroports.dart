@@ -82,9 +82,9 @@ class _AeroportsState extends State<Aeroports> {
                       leading: CircleAvatar(
                         child: Text(aeroport.code.toString()),
                       ),
-                      title: Text(aeroport.nom),
-                      subtitle: Text('${aeroport.ville}, ${aeroport.pays}'),
-                      trailing: Text('${aeroport.code}'),
+                      title: Text(aeroport.nom, style: TextStyle(color: Colors.white)),
+                      subtitle: Text('${aeroport.ville}, ${aeroport.pays}', style: TextStyle(color: Colors.white60)),
+                      trailing: Text('${aeroport.code}', style: TextStyle(color: Colors.white60)),
                     );
                   },
                 )

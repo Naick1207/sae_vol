@@ -1,17 +1,18 @@
 import 'Aeroport.dart';
 import '../resources/json.dart';
+import 'package:intl/intl.dart';
 
 class Vol {
   final int numero;
   final String compagnie;
-  final String tempsD;
+  final DateTime tempsD;
   final String terminalD;
   final String aeroportD;
-  final String tempsA;
-  final String terminalA;
-  final String aeroportA;
+  DateTime tempsA;
+  String terminalA;
+  String aeroportA;
   final int codeAeroportD;
-  final int codeAeroportA;
+  int codeAeroportA;
 
   Aeroport? aeroportDepart;
   Aeroport? aeroportArrivee;
@@ -49,10 +50,10 @@ class Vol {
     'codeAeroportA': int codeAeroportA} => Vol(
       numero: numero,
       compagnie: compagnie,
-      tempsD: tempsD,
+      tempsD: DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(tempsD),
       terminalD: terminalD,
       aeroportD: aeroportD,
-      tempsA: tempsA,
+      tempsA: DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(tempsA),
       terminalA: terminalA,
       aeroportA: aeroportA,
       codeAeroportD: codeAeroportD,

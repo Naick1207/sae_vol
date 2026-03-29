@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../API/Vol.dart';
 import '../resources/json.dart';
 
@@ -37,10 +37,11 @@ class _ChoixVilleState extends State<ChoixVille> {
         widget.onChoixChanged();
       },
       borderRadius: const BorderRadius.all(Radius.circular(8)),
-      selectedBorderColor: Colors.blue[900],
-      selectedColor: Colors.white,
-      fillColor: Colors.blue[500],
-      color: Colors.blue[400],
+      selectedBorderColor: Colors.black,
+      selectedColor: Colors.lightBlueAccent,
+      borderColor: Colors.black,
+      fillColor: Color(0xAB000000),
+      color: Colors.black,
       constraints: const BoxConstraints(
         minHeight: 40.0,
         minWidth: 80.0,
@@ -141,9 +142,9 @@ class _VolsState extends State<Vols> {
                       leading: CircleAvatar(
                         child: Text(vol.numero.toString()),
                       ),
-                      title: Text('${vol.aeroportDepart?.ville} (${vol.aeroportD}) -> ${vol.aeroportArrivee?.ville} (${vol.aeroportA})'),
-                      subtitle: Text('${vol.compagnie} | Départ: ${vol.tempsD} (T${vol.terminalD}) | Arrivée: ${vol.tempsA} (T${vol.terminalA})'),
-                      trailing: Text('${vol.codeAeroportD} -> ${vol.codeAeroportA}'),
+                      title: Text('${vol.aeroportDepart?.ville} (${vol.aeroportD}) -> ${vol.aeroportArrivee?.ville} (${vol.aeroportA})', style: TextStyle(color: Colors.white)),
+                      subtitle: Text('${vol.compagnie} | Départ: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsD)} (T${vol.terminalD}) | Arrivée: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsA)} (T${vol.terminalA})', style: TextStyle(color: Colors.white60)),
+                      trailing: Text('${vol.codeAeroportD} -> ${vol.codeAeroportA}', style: TextStyle(color: Colors.white60)),
                     );
                   },
                 )
