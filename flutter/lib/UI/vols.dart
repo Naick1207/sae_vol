@@ -75,8 +75,8 @@ class _VolsState extends State<Vols> {
     setState(() {
       _filteredVols = _allVols.where((vol) {
         final q = query.toLowerCase();
-        return (choixActuel <= 1 ? vol.aeroportDepart?.ville.toLowerCase().contains(q) == true : false) ||
-               (choixActuel >= 1 ? vol.aeroportArrivee?.ville.toLowerCase().contains(q) == true : false);
+        return (choixActuel <= 1 ? vol.aeroportDepart?.ville.toLowerCase().contains(q) == true || vol.aeroportDepart?.pays.toLowerCase().contains(q) == true : false) ||
+               (choixActuel >= 1 ? vol.aeroportArrivee?.ville.toLowerCase().contains(q) == true || vol.aeroportArrivee?.pays.toLowerCase().contains(q) == true : false);
       }).toList();
     });
   }
@@ -103,7 +103,7 @@ class _VolsState extends State<Vols> {
               child: SearchBar(
                 controller: _searchController,
                 leading: const Icon(Icons.search),
-                hintText: "Recherchez une ville",
+                hintText: "Recherchez une ville ou un pays",
                 backgroundColor: WidgetStateProperty.all(Colors.white),
                 onChanged: onSearchChanged,
                 shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
@@ -131,7 +131,7 @@ class _VolsState extends State<Vols> {
             }
 
             return _filteredVols.isEmpty
-              ? const Center(child: Text("Aucun Vol trouvé :("))
+              ? const Center(child: Text("Aucun vol trouvé :("))
               : Expanded(
                 child: ListView.builder(
                   itemCount: _filteredVols.length,

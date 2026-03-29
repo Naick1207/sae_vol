@@ -36,12 +36,12 @@ class _MenuState extends State<Menu> {
                   onTap: () => setState(() => _selectedIndex = 0),
                 ),
                 ListTile(
-                  title: const Text("Vols"),
+                  title: const Text("Vols directs"),
                   selected: _selectedIndex == 1,
                   onTap: () => setState(() => _selectedIndex = 1),
                 ),
                 ListTile(
-                  title: const Text("Correspondances"),
+                  title: const Text("Vols avec correspondances"),
                   selected: _selectedIndex == 2,
                   onTap: () => setState(() => _selectedIndex = 2),
                 ),

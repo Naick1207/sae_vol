@@ -58,7 +58,7 @@ class Vol {
       codeAeroportD: codeAeroportD,
       codeAeroportA: codeAeroportA
     ),
-    _ => throw const FormatException('Ca marche pas =(')
+    _ => throw const FormatException('Ca marche pas :(')
     };
   }
 }
