@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../API/Vol.dart';
 import '../resources/json.dart';
+import 'styles.dart';
 
 const List<Widget> choix = <Widget>[
   Text("Départ"),
@@ -25,32 +26,24 @@ class _ChoixVilleState extends State<ChoixVille> {
 
   @override
   Widget build(BuildContext context) {
-    return ToggleButtons(
-      direction: Axis.horizontal,
-      onPressed: (int index) {
-        setState(() {
-          for (int i = 0; i < _choix.length; i++) {
-            _choix[i] = i == index;
-          }
-          choixActuel = index;
-        });
-        widget.onChoixChanged();
-      },
-      borderRadius: const BorderRadius.all(Radius.circular(8)),
-      selectedBorderColor: Colors.black,
-      selectedColor: Colors.lightBlueAccent,
-      borderColor: Colors.black,
-      fillColor: Color(0xAB000000),
-      color: Colors.black,
-      constraints: const BoxConstraints(
-        minHeight: 40.0,
-        minWidth: 80.0,
-      ),
-      isSelected: _choix,
-      children: choix,
+    return ToggleButtonsTheme(
+      data: Style.styleToggleButton,
+      child: ToggleButtons(
+        direction: Axis.horizontal,
+        onPressed: (int index) {
+          setState(() {
+            for (int i = 0; i < _choix.length; i++) {
+              _choix[i] = i == index;
+            }
+            choixActuel = index;
+          });
+          widget.onChoixChanged();
+        },
+        isSelected: _choix,
+        children: choix,
+      )
     );
   }
-
 }
 
 class Vols extends StatefulWidget {
@@ -105,7 +98,7 @@ class _VolsState extends State<Vols> {
                 controller: _searchController,
                 leading: const Icon(Icons.search),
                 hintText: "Recherchez une ville ou un pays",
-                backgroundColor: WidgetStateProperty.all(Colors.white),
+                backgroundColor: WidgetStateProperty.all(Style.couleurBarreRecherche),
                 onChanged: onSearchChanged,
                 shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
               ),
@@ -120,7 +113,7 @@ class _VolsState extends State<Vols> {
           future: _futureVols,
           builder: (context, snapshot){
             if(snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(color: Colors.lightBlueAccent));
+              return Style.chargement;
             }
             if(snapshot.hasError){
               return Text("Ca marche pas :( : ${snapshot.error}");
@@ -134,19 +127,22 @@ class _VolsState extends State<Vols> {
             return _filteredVols.isEmpty
               ? const Center(child: Text("Aucun vol trouvé :("))
               : Expanded(
-                child: ListView.builder(
-                  itemCount: _filteredVols.length,
-                  itemBuilder: (context, index) {
-                    final vol = _filteredVols[index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        child: Text(vol.numero.toString()),
-                      ),
-                      title: Text('${vol.aeroportDepart?.ville} (${vol.aeroportDepart?.nom}) -> ${vol.aeroportArrivee?.ville} (${vol.aeroportArrivee?.nom})', style: TextStyle(color: Colors.white)),
-                      subtitle: Text('${vol.compagnie} | Départ: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsD)} (T${vol.terminalD}) | Arrivée: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsA)} (T${vol.terminalA})', style: TextStyle(color: Colors.white60)),
-                      trailing: Text('${vol.codeAeroportD} -> ${vol.codeAeroportA}', style: TextStyle(color: Colors.white60)),
-                    );
-                  },
+                child: ListTileTheme(
+                  data: Style.styleElement,
+                  child: ListView.builder(
+                    itemCount: _filteredVols.length,
+                    itemBuilder: (context, index) {
+                      final vol = _filteredVols[index];
+                      return ListTile(
+                        leading: CircleAvatar(
+                          child: Text(vol.numero.toString()),
+                        ),
+                        title: Text('${vol.aeroportDepart?.ville} (${vol.aeroportDepart?.nom}) -> ${vol.aeroportArrivee?.ville} (${vol.aeroportArrivee?.nom})'),
+                        subtitle: Text('${vol.compagnie} | Départ: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsD)} (T${vol.terminalD}) | Arrivée: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsA)} (T${vol.terminalA})'),
+                        trailing: Text('${vol.codeAeroportD} -> ${vol.codeAeroportA}'),
+                      );
+                    },
+                  )
                 )
               );
           }

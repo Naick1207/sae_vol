@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sae_vol/resources/json.dart';
 import '../API/Aeroport.dart';
 import '../API/Vol.dart';
+import 'styles.dart';
 
 class CardAccueil extends StatelessWidget {
   const CardAccueil({required this.titre, required this.chiffre});
@@ -31,7 +32,7 @@ class Accueil extends StatelessWidget{
     return Column(
       children: <Widget>[
         Padding(padding: const EdgeInsets.all(15),
-        child: const Text("Bienvenue sur Wilson Compagnie", textAlign: TextAlign.start, style: TextStyle(fontSize: 45, color: Colors.white))),
+        child: Text("Bienvenue sur Wilson Compagnie", textAlign: TextAlign.start, style: TextStyle(fontSize: 45, color: Style.couleurTitre))),
         SizedBox(height: 200),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

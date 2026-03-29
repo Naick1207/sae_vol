@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../API/Vol.dart';
 import '../API/Correspondance.dart';
 import '../resources/json.dart';
+import 'styles.dart';
 
 const List<Widget> choix = <Widget>[
   Text("Départ"),
@@ -26,29 +27,22 @@ class _ChoixVilleState extends State<ChoixVille> {
 
   @override
   Widget build(BuildContext context) {
-    return ToggleButtons(
-      direction: Axis.horizontal,
-      onPressed: (int index) {
-        setState(() {
-          for (int i = 0; i < _choix.length; i++) {
-            _choix[i] = i == index;
-          }
-          choixActuel = index;
-        });
-        widget.onChoixChanged();
-      },
-      borderRadius: const BorderRadius.all(Radius.circular(8)),
-      selectedBorderColor: Colors.black,
-      selectedColor: Colors.lightBlueAccent,
-      borderColor: Colors.black,
-      fillColor: Color(0xAB000000),
-      color: Colors.black,
-      constraints: const BoxConstraints(
-        minHeight: 40.0,
-        minWidth: 80.0,
-      ),
-      isSelected: _choix,
-      children: choix,
+    return ToggleButtonsTheme(
+      data: Style.styleToggleButton,
+      child: ToggleButtons(
+        direction: Axis.horizontal,
+        onPressed: (int index) {
+          setState(() {
+            for (int i = 0; i < _choix.length; i++) {
+              _choix[i] = i == index;
+            }
+            choixActuel = index;
+          });
+          widget.onChoixChanged();
+        },
+        isSelected: _choix,
+        children: choix,
+      )
     );
   }
 }
@@ -61,23 +55,26 @@ class DetailCorrespondance extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[900],
+      backgroundColor: Style.couleurFond,
       appBar: AppBar(
         title: Text('${correspondance.aeroportDepart?.ville} (${correspondance.aeroportDepart?.nom}) -> ${correspondance.aeroportArrivee?.ville} (${correspondance.aeroportArrivee?.nom}) | Correspondances : ${correspondance.vols.length}'),
         centerTitle: true,
-        backgroundColor: Color(0xAB000000),
-        foregroundColor: Colors.white,
+        backgroundColor: Style.couleurMenu,
+        foregroundColor: Style.couleurTitre,
       ),
-      body: ListView.builder(
-        itemCount: correspondance.vols.length,
-        itemBuilder: (context, index) {
-          final vol = correspondance.vols[index];
-          return ListTile(
-              title: Text('${vol.aeroportDepart?.ville} (${vol.aeroportDepart?.nom}) -> ${vol.aeroportArrivee?.ville} (${vol.aeroportArrivee?.nom})', style: TextStyle(color: Colors.white)),
-              subtitle: Text('${vol.compagnie} | Départ: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsD)} (T${vol.terminalD}) | Arrivée: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsA)} (T${vol.terminalA})', style: TextStyle(color: Colors.white60)),
-              trailing: Text('${vol.codeAeroportD} -> ${vol.codeAeroportA}', style: TextStyle(color: Colors.white60))
-          );
-        }
+      body: ListTileTheme(
+        data: Style.styleElement,
+        child: ListView.builder(
+          itemCount: correspondance.vols.length,
+          itemBuilder: (context, index) {
+            final vol = correspondance.vols[index];
+            return ListTile(
+                title: Text('${vol.aeroportDepart?.ville} (${vol.aeroportDepart?.nom}) -> ${vol.aeroportArrivee?.ville} (${vol.aeroportArrivee?.nom})'),
+                subtitle: Text('${vol.compagnie} | Départ: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsD)} (T${vol.terminalD}) | Arrivée: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsA)} (T${vol.terminalA})'),
+                trailing: Text('${vol.codeAeroportD} -> ${vol.codeAeroportA}')
+            );
+          }
+        )
       )
     );
   }
@@ -126,70 +123,73 @@ class _CorrespondancesState extends State<Correspondances> {
   @override
   Widget build(BuildContext context){
     return Column(
-        children: [
-          SizedBox(height: 25),
-          Row(
-              children: [
-                SizedBox(width: 10),
-                Expanded(
-                  child: SearchBar(
-                    controller: _searchController,
-                    leading: const Icon(Icons.search),
-                    hintText: "Recherchez une ville ou un pays",
-                    backgroundColor: WidgetStateProperty.all(Colors.white),
-                    onChanged: onSearchChanged,
-                    shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-                  ),
-                ),
-                SizedBox(width: 10),
-                ChoixVille(onChoixChanged: _onChoixChanged),
-                SizedBox(width: 10),
-              ]
-          ),
-          SizedBox(height: 15),
-          FutureBuilder(
-              future: _futureCorrespondances,
-              builder: (context, snapshot){
-                if(snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator(color: Colors.lightBlueAccent));
-                }
-                if(snapshot.hasError){
-                  return Text("Ca marche pas :( : ${snapshot.error}");
-                }
+      children: [
+        SizedBox(height: 25),
+        Row(
+          children: [
+            SizedBox(width: 10),
+            Expanded(
+              child: SearchBar(
+                controller: _searchController,
+                leading: const Icon(Icons.search),
+                hintText: "Recherchez une ville ou un pays",
+                backgroundColor: WidgetStateProperty.all(Style.couleurBarreRecherche),
+                onChanged: onSearchChanged,
+                shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+              ),
+            ),
+            SizedBox(width: 10),
+            ChoixVille(onChoixChanged: _onChoixChanged),
+            SizedBox(width: 10),
+          ]
+        ),
+        SizedBox(height: 15),
+        FutureBuilder(
+          future: _futureCorrespondances,
+          builder: (context, snapshot){
+            if(snapshot.connectionState == ConnectionState.waiting) {
+              return Style.chargement;
+            }
+            if(snapshot.hasError){
+              return Text("Ca marche pas :( : ${snapshot.error}");
+            }
 
-                if (_allCorrespondances.isEmpty) {
-                  _allVols = snapshot.data!;
-                  _allCorrespondances = Correspondance.genererCorrespondances(_allVols);
-                  _filteredCorrespondances = _allCorrespondances;
-                }
+            if (_allCorrespondances.isEmpty) {
+              _allVols = snapshot.data!;
+              _allCorrespondances = Correspondance.genererCorrespondances(_allVols);
+              _filteredCorrespondances = _allCorrespondances;
+            }
 
-                return _filteredCorrespondances.isEmpty
-                    ? const Center(child: Text("Aucun vol trouvé :("))
-                    : Expanded(
-                    child: ListView.builder(
-                      itemCount: _filteredCorrespondances.length,
-                      itemBuilder: (context, index) {
-                        final correspondance = _filteredCorrespondances[index];
-                        return ListTile(
-                          leading: CircleAvatar(
-                            child: Text(correspondance.numero.toString()),
-                          ),
-                          title: Text('${correspondance.aeroportDepart?.ville} (${correspondance.aeroportDepart?.nom}) -> ${correspondance.aeroportArrivee?.ville} (${correspondance.aeroportArrivee?.nom})', style: TextStyle(color: Colors.white)),
-                          subtitle: Text('${correspondance.compagnie} | Départ: ${DateFormat("dd/MM/yyyy HH:mm").format(correspondance.tempsD)} (T${correspondance.terminalD}) | Arrivée: ${DateFormat("dd/MM/yyyy HH:mm").format(correspondance.tempsA)} (T${correspondance.terminalA})', style: TextStyle(color: Colors.white60)),
-                          trailing: Text('${correspondance.codeAeroportD} -> ${correspondance.codeAeroportA}', style: TextStyle(color: Colors.white60)),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => DetailCorrespondance(correspondance: correspondance))
-                            );
-                          }
+            return _filteredCorrespondances.isEmpty
+              ? const Center(child: Text("Aucun vol trouvé :("))
+              : Expanded(
+              child: ListTileTheme(
+                data: Style.styleElement,
+                child: ListView.builder(
+                  itemCount: _filteredCorrespondances.length,
+                  itemBuilder: (context, index) {
+                    final correspondance = _filteredCorrespondances[index];
+                    return ListTile(
+                      leading: CircleAvatar(
+                        child: Text(correspondance.numero.toString()),
+                      ),
+                      title: Text('${correspondance.aeroportDepart?.ville} (${correspondance.aeroportDepart?.nom}) -> ${correspondance.aeroportArrivee?.ville} (${correspondance.aeroportArrivee?.nom})'),
+                      subtitle: Text('${correspondance.compagnie} | Départ: ${DateFormat("dd/MM/yyyy HH:mm").format(correspondance.tempsD)} (T${correspondance.terminalD}) | Arrivée: ${DateFormat("dd/MM/yyyy HH:mm").format(correspondance.tempsA)} (T${correspondance.terminalA})'),
+                      trailing: Text('${correspondance.codeAeroportD} -> ${correspondance.codeAeroportA}'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DetailCorrespondance(correspondance: correspondance))
                         );
-                      },
-                    )
-                );
-              }
-          )
-        ]
+                      }
+                    );
+                  },
+                )
+              )
+            );
+          }
+        )
+      ]
     );
   }
 }

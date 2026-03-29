@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../API/Aeroport.dart';
 import '../resources/json.dart';
+import 'styles.dart';
 
 class Aeroports extends StatefulWidget{
   const Aeroports({super.key});
@@ -49,7 +50,7 @@ class _AeroportsState extends State<Aeroports> {
             controller: _searchController,
             leading: const Icon(Icons.search),
             hintText: "Recherchez un nom d'aéroport, une ville ou un pays",
-            backgroundColor: WidgetStateProperty.all(Colors.white),
+            backgroundColor: WidgetStateProperty.all(Style.couleurBarreRecherche),
             onChanged: _onSearchChanged,
             shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
           )
@@ -59,7 +60,7 @@ class _AeroportsState extends State<Aeroports> {
           future: _futureAeroports,
           builder: (context, snapshot){
             if(snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(color: Colors.lightBlueAccent));
+              return Style.chargement;
             }
             if(snapshot.hasError){
               return Text("Ca marche pas :( : ${snapshot.error}");
@@ -73,19 +74,22 @@ class _AeroportsState extends State<Aeroports> {
             return _filteredAeroports.isEmpty
               ? const Center(child: Text("Aucun aéroport trouvé :("))
               : Expanded(
-                child: ListView.builder (
-                  itemCount: _filteredAeroports.length,
-                  itemBuilder: (context, index) {
-                    final aeroport = _filteredAeroports[index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        child: Text(aeroport.code.toString()),
-                      ),
-                      title: Text(aeroport.nom, style: TextStyle(color: Colors.white)),
-                      subtitle: Text('${aeroport.ville}, ${aeroport.pays}', style: TextStyle(color: Colors.white60)),
-                      trailing: Text('${aeroport.code}', style: TextStyle(color: Colors.white60)),
-                    );
-                  },
+                child: ListTileTheme(
+                  data: Style.styleElement,
+                  child: ListView.builder (
+                    itemCount: _filteredAeroports.length,
+                    itemBuilder: (context, index) {
+                      final aeroport = _filteredAeroports[index];
+                      return ListTile(
+                        leading: CircleAvatar(
+                          child: Text(aeroport.code.toString()),
+                        ),
+                        title: Text(aeroport.nom),
+                        subtitle: Text('${aeroport.ville}, ${aeroport.pays}'),
+                        trailing: Text('${aeroport.code}'),
+                      );
+                    },
+                  )
                 )
               );
           }
