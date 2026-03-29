@@ -8,10 +8,8 @@ class Correspondance extends Vol {
     compagnie: vol.compagnie,
     tempsD: vol.tempsD,
     terminalD: vol.terminalD,
-    aeroportD: vol.aeroportD,
     tempsA: vol.tempsA,
     terminalA: vol.terminalA,
-    aeroportA: vol.aeroportA,
     codeAeroportD: vol.codeAeroportD,
     codeAeroportA: vol.codeAeroportA,
     aeroportDepart: vol.aeroportDepart,
@@ -25,10 +23,8 @@ class Correspondance extends Vol {
     compagnie: autreCorrespondance.compagnie,
     tempsD: autreCorrespondance.tempsD,
     terminalD: autreCorrespondance.terminalD,
-    aeroportD: autreCorrespondance.aeroportD,
     tempsA: autreCorrespondance.tempsA,
     terminalA: autreCorrespondance.terminalA,
-    aeroportA: autreCorrespondance.aeroportA,
     codeAeroportD: autreCorrespondance.codeAeroportD,
     codeAeroportA: autreCorrespondance.codeAeroportA,
     aeroportDepart: autreCorrespondance.aeroportDepart,
@@ -42,7 +38,6 @@ class Correspondance extends Vol {
     tempsA = vol.tempsA;
     terminalA = vol.terminalA;
     codeAeroportA = vol.codeAeroportA;
-    aeroportA = vol.aeroportA;
     aeroportArrivee = vol.aeroportArrivee;
   }
 

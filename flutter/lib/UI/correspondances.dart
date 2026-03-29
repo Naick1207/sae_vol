@@ -63,7 +63,7 @@ class DetailCorrespondance extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blue[900],
       appBar: AppBar(
-        title: Text('${correspondance.aeroportDepart?.ville} (${correspondance.aeroportD}) -> ${correspondance.aeroportArrivee?.ville} (${correspondance.aeroportA}) | Correspondances : ${correspondance.vols.length}'),
+        title: Text('${correspondance.aeroportDepart?.ville} (${correspondance.aeroportDepart?.nom}) -> ${correspondance.aeroportArrivee?.ville} (${correspondance.aeroportArrivee?.nom}) | Correspondances : ${correspondance.vols.length}'),
         centerTitle: true,
         backgroundColor: Color(0xAB000000),
         foregroundColor: Colors.white,
@@ -73,7 +73,7 @@ class DetailCorrespondance extends StatelessWidget {
         itemBuilder: (context, index) {
           final vol = correspondance.vols[index];
           return ListTile(
-              title: Text('${vol.aeroportDepart?.ville} (${vol.aeroportD}) -> ${vol.aeroportArrivee?.ville} (${vol.aeroportA})', style: TextStyle(color: Colors.white)),
+              title: Text('${vol.aeroportDepart?.ville} (${vol.aeroportDepart?.nom}) -> ${vol.aeroportArrivee?.ville} (${vol.aeroportArrivee?.nom})', style: TextStyle(color: Colors.white)),
               subtitle: Text('${vol.compagnie} | Départ: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsD)} (T${vol.terminalD}) | Arrivée: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsA)} (T${vol.terminalA})', style: TextStyle(color: Colors.white60)),
               trailing: Text('${vol.codeAeroportD} -> ${vol.codeAeroportA}', style: TextStyle(color: Colors.white60))
           );
@@ -151,7 +151,7 @@ class _CorrespondancesState extends State<Correspondances> {
               future: _futureCorrespondances,
               builder: (context, snapshot){
                 if(snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator(color: Colors.lightBlueAccent));
                 }
                 if(snapshot.hasError){
                   return Text("Ca marche pas :( : ${snapshot.error}");
@@ -174,7 +174,7 @@ class _CorrespondancesState extends State<Correspondances> {
                           leading: CircleAvatar(
                             child: Text(correspondance.numero.toString()),
                           ),
-                          title: Text('${correspondance.aeroportDepart?.ville} (${correspondance.aeroportD}) -> ${correspondance.aeroportArrivee?.ville} (${correspondance.aeroportA})', style: TextStyle(color: Colors.white)),
+                          title: Text('${correspondance.aeroportDepart?.ville} (${correspondance.aeroportDepart?.nom}) -> ${correspondance.aeroportArrivee?.ville} (${correspondance.aeroportArrivee?.nom})', style: TextStyle(color: Colors.white)),
                           subtitle: Text('${correspondance.compagnie} | Départ: ${DateFormat("dd/MM/yyyy HH:mm").format(correspondance.tempsD)} (T${correspondance.terminalD}) | Arrivée: ${DateFormat("dd/MM/yyyy HH:mm").format(correspondance.tempsA)} (T${correspondance.terminalA})', style: TextStyle(color: Colors.white60)),
                           trailing: Text('${correspondance.codeAeroportD} -> ${correspondance.codeAeroportA}', style: TextStyle(color: Colors.white60)),
                           onTap: () {

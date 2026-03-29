@@ -120,7 +120,7 @@ class _VolsState extends State<Vols> {
           future: _futureVols,
           builder: (context, snapshot){
             if(snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(color: Colors.lightBlueAccent));
             }
             if(snapshot.hasError){
               return Text("Ca marche pas :( : ${snapshot.error}");
@@ -142,7 +142,7 @@ class _VolsState extends State<Vols> {
                       leading: CircleAvatar(
                         child: Text(vol.numero.toString()),
                       ),
-                      title: Text('${vol.aeroportDepart?.ville} (${vol.aeroportD}) -> ${vol.aeroportArrivee?.ville} (${vol.aeroportA})', style: TextStyle(color: Colors.white)),
+                      title: Text('${vol.aeroportDepart?.ville} (${vol.aeroportDepart?.nom}) -> ${vol.aeroportArrivee?.ville} (${vol.aeroportArrivee?.nom})', style: TextStyle(color: Colors.white)),
                       subtitle: Text('${vol.compagnie} | Départ: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsD)} (T${vol.terminalD}) | Arrivée: ${DateFormat("dd/MM/yyyy HH:mm").format(vol.tempsA)} (T${vol.terminalA})', style: TextStyle(color: Colors.white60)),
                       trailing: Text('${vol.codeAeroportD} -> ${vol.codeAeroportA}', style: TextStyle(color: Colors.white60)),
                     );

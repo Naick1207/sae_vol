@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../API/Aeroport.dart';
 import '../resources/json.dart';
@@ -60,7 +59,7 @@ class _AeroportsState extends State<Aeroports> {
           future: _futureAeroports,
           builder: (context, snapshot){
             if(snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(color: Colors.lightBlueAccent));
             }
             if(snapshot.hasError){
               return Text("Ca marche pas :( : ${snapshot.error}");
