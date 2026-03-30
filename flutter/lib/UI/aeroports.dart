@@ -13,7 +13,7 @@ class Aeroports extends StatefulWidget{
 class _AeroportsState extends State<Aeroports> {
   final SearchController _controllerRecherche = SearchController();
   List<Aeroport> _lesAeroports = [];
-  List<Aeroport> _fitreAeroports = [];
+  List<Aeroport> _filtrerAeroports = [];
   late Future<List<Aeroport>> _futureAeroports;
 
   @override
@@ -24,7 +24,7 @@ class _AeroportsState extends State<Aeroports> {
 
   void _rechercheChanged(String query) {
     setState(() {
-      _filtreAeroports = _lesAeroports.where((aeroport) {
+      _filtrerAeroports = _lesAeroports.where((aeroport) {
         final q = query.toLowerCase();
         return aeroport.ville.toLowerCase().contains(q) == true ||
             aeroport.nom.toLowerCase().contains(q) == true ||
@@ -68,7 +68,7 @@ class _AeroportsState extends State<Aeroports> {
 
             if (_lesAeroports.isEmpty) {
               _lesAeroports = snapshot.data!;
-              _filtreAeroports = _lesAeroports;
+              _filtrerAeroports = _lesAeroports;
             }
 
             return _filtrerAeroports.isEmpty

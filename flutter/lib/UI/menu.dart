@@ -38,29 +38,29 @@ class _MenuState extends State<Menu> {
                   ListTile(
                     title: const Text("Accueil"),
                     selected: _indexCourant == 0,
-                    onTap: () => setState(() => _selectedIndex = 0),
+                    onTap: () => setState(() => _indexCourant = 0),
                   ),
                   ListTile(
                     title: const Text("Vols directs"),
                     selected: _indexCourant == 1,
-                    onTap: () => setState(() => _selectedIndex = 1),
+                    onTap: () => setState(() => _indexCourant = 1),
                   ),
                   ListTile(
                     title: const Text("Vols avec correspondances"),
                     selected: _indexCourant == 2,
-                    onTap: () => setState(() => _selectedIndex = 2),
+                    onTap: () => setState(() => _indexCourant = 2),
                   ),
                   ListTile(
                     title: const Text("Aéroports"),
                     selected: _indexCourant == 3,
-                    onTap: () => setState(() => _selectedIndex = 3),
+                    onTap: () => setState(() => _indexCourant = 3),
                   ),
                 ],
               ),
             )
           ),
           Expanded(
-            child: _pages[_selectedIndex], //affiche la page sélectionnée
+            child: _pages[_indexCourant], //affiche la page sélectionnée
           ),
         ],
       ),
