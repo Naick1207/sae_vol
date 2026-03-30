@@ -44,9 +44,9 @@ class Vol {
     'codeAeroportA': int codeAeroportA} => Vol(
       numero: numero,
       compagnie: compagnie,
-      tempsD: DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(tempsD),
+      tempsD: DateFormat("yyyy-MM-dd'T'HH:mm").parse(tempsD),
       terminalD: terminalD,
-      tempsA: DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(tempsA),
+      tempsA: DateFormat("yyyy-MM-dd'T'HH:mm").parse(tempsA),
       terminalA: terminalA,
       codeAeroportD: codeAeroportD,
       codeAeroportA: codeAeroportA
