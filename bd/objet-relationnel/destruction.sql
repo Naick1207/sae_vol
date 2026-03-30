@@ -1,0 +1,4 @@
+DROP TABLE VOL;
+DROP TABLE AEROPORT;
+DROP TYPE equipageTab;
+DROP TYPE IndiceQualiteListe;
