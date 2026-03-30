@@ -1,1 +1,41 @@
-SAE Vol
+SAE Vol# ✈️ Wilson Compagnie - Système de Gestion de Vols
+
+Application moderne de gestion de trafic aérien (SAE Vol). Ce projet utilise une architecture **SPA** (Single Page Application) avec un backend **Flask RESTful** et une base de données **Oracle**.
+
+---
+
+## 🛠️ Installation et Configuration SPA
+
+### 1. Configuration de la base de données Oracle
+Le projet nécessite une connexion à une base de données Oracle. Vous devez configurer vos identifiants personnels :
+
+1. Accédez au dossier : `Restx/API/app/`
+2. Ouvrez le fichier `.env` (créez-le s'il n'existe pas).
+3. Modifiez les lignes suivantes en remplaçant `moisan` par **votre nom d'utilisateur Oracle** :
+
+```env
+# Modifier 'moisan' par votre identifiant IUT
+DB_USER=votre_nom
+DB_PASSWORD=votre_mot_de_passe
+DB_HOST=oracle.iut-informatique.fr
+```
+
+### 2. Lancement du Backend (API)
+Un script d'automatisation est fourni pour configurer l'environnement et lancer les services.
+
+Ouvrez un terminal à la racine du projet (sae_vol).
+
+Exécutez le script avec Python :
+
+```Bash
+python lanceur.py
+```
+Ce que fait le script automatiquement :
+
+Création de l'environnement virtuel (.venv).
+
+Installation des dépendances (requirements.txt).
+
+Synchronisation de la base de données via la commande flask syncdb.
+
+Lancement du serveur de développement sur http://127.0.0.1:5000.
