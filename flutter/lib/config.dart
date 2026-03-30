@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+// Configure l'adresse de l'API
 class Config {
   static String get apiUrl {
     if (kIsWeb) {

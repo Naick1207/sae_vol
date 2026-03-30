@@ -13,7 +13,7 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  int _selectedIndex = 0;
+  int _indexCourant = 0;
 
   final List<Widget> _pages = [
     const Accueil(),
@@ -37,22 +37,22 @@ class _MenuState extends State<Menu> {
                 children: [
                   ListTile(
                     title: const Text("Accueil"),
-                    selected: _selectedIndex == 0,
+                    selected: _indexCourant == 0,
                     onTap: () => setState(() => _selectedIndex = 0),
                   ),
                   ListTile(
                     title: const Text("Vols directs"),
-                    selected: _selectedIndex == 1,
+                    selected: _indexCourant == 1,
                     onTap: () => setState(() => _selectedIndex = 1),
                   ),
                   ListTile(
                     title: const Text("Vols avec correspondances"),
-                    selected: _selectedIndex == 2,
+                    selected: _indexCourant == 2,
                     onTap: () => setState(() => _selectedIndex = 2),
                   ),
                   ListTile(
                     title: const Text("Aéroports"),
-                    selected: _selectedIndex == 3,
+                    selected: _indexCourant == 3,
                     onTap: () => setState(() => _selectedIndex = 3),
                   ),
                 ],

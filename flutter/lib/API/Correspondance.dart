@@ -1,8 +1,11 @@
 import 'Vol.dart';
 
+// Les correspondances vont s'afficher d'une manière similaire aux vols,
+// On crée donc la classe Correspondance comme un enfant de Vol avec la liste des Vols chainés
 class Correspondance extends Vol {
   final List<Vol> vols = [];
 
+  // On crée un objet de Correspondance à partir d'un Vol
   Correspondance.fromVol(Vol vol) : super(
     numero: vol.numero,
     compagnie: vol.compagnie,
@@ -18,6 +21,7 @@ class Correspondance extends Vol {
     vols.add(vol);
   }
 
+  // Permet de créer une copie de la correspondance
   Correspondance.fromAutreCorrespondance(Correspondance autreCorrespondance) : super(
     numero: autreCorrespondance.numero,
     compagnie: autreCorrespondance.compagnie,
@@ -33,6 +37,7 @@ class Correspondance extends Vol {
     vols.addAll(autreCorrespondance.vols);
   }
 
+  // Ajoute un vol à la fin de la liste, il est défini comme le dernier vol, modifiant ses attributs liés à l'aéroport d'arrivée
   void _ajouterVol(Vol vol) {
     vols.add(vol);
     tempsA = vol.tempsA;
@@ -51,6 +56,7 @@ class Correspondance extends Vol {
                               vol.aeroportArrivee?.pays.toLowerCase().contains(texte) == true);
   }
 
+  // Récupère les vols faisant office de premier vol d'une suite de correspondances
   static List<Correspondance> _recupererDeparts(List<Vol> vols) {
     final correspondances = <Correspondance>[];
 
@@ -67,6 +73,7 @@ class Correspondance extends Vol {
     return correspondances;
   }
 
+  // Fonction récursive récupérant les correspondances suivantes
   static void _suiteVolsCorrespondances(Correspondance correspondance, List<Vol> lesVols, List<Correspondance> lesCorrespondances) {
     final volsSuivants = lesVols.where((vol) {return vol.codeAeroportD == correspondance.codeAeroportA && vol.tempsD.isAfter(correspondance.tempsA);}).toList();
 

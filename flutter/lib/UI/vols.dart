@@ -4,6 +4,8 @@ import '../API/Vol.dart';
 import '../resources/json.dart';
 import 'styles.dart';
 
+// La liste des choix pour la recherche, définissant la méthode de recherche,
+// le "&" recherche sur l'aéroport de départ & d'arrivée, et est celui qui est activé de base
 const List<Widget> choix = <Widget>[
   Text("Départ"),
   Text("&"),
@@ -54,9 +56,9 @@ class Vols extends StatefulWidget {
 }
 
 class _VolsState extends State<Vols> {
-  final SearchController _searchController = SearchController();
-  List<Vol> _allVols = [];
-  List<Vol> _filteredVols = [];
+  final SearchController _controllerRecherche = SearchController();
+  List<Vol> _lesVols = [];
+  List<Vol> _filtrerVols = [];
   late Future<List<Vol>> _futureVols;
 
   @override
@@ -65,9 +67,9 @@ class _VolsState extends State<Vols> {
     _futureVols = getVols();
   }
 
-  void onSearchChanged(String query) {
+  void rechercheChanged(String query) {
     setState(() {
-      _filteredVols = _allVols.where((vol) {
+      _filtrerVols = _lesVols.where((vol) {
         final q = query.toLowerCase();
         return (choixActuel <= 1 ? vol.aeroportDepart?.ville.toLowerCase().contains(q) == true || vol.aeroportDepart?.pays.toLowerCase().contains(q) == true : false) ||
                (choixActuel >= 1 ? vol.aeroportArrivee?.ville.toLowerCase().contains(q) == true || vol.aeroportArrivee?.pays.toLowerCase().contains(q) == true : false);
@@ -76,12 +78,12 @@ class _VolsState extends State<Vols> {
   }
 
   void _onChoixChanged() {
-    onSearchChanged(_searchController.text);
+    rechercheChanged(_controllerRecherche.text);
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
+    _controllerRecherche.dispose();
     super.dispose();
   }
 
@@ -95,11 +97,11 @@ class _VolsState extends State<Vols> {
             SizedBox(width: 10),
             Expanded(
               child: SearchBar(
-                controller: _searchController,
+                controller: _controllerRecherche,
                 leading: const Icon(Icons.search),
                 hintText: "Recherchez une ville ou un pays",
                 backgroundColor: WidgetStateProperty.all(Style.couleurBarreRecherche),
-                onChanged: onSearchChanged,
+                onChanged: rechercheChanged,
                 shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
               ),
             ),
@@ -119,20 +121,20 @@ class _VolsState extends State<Vols> {
               return Text("Ca marche pas :( : ${snapshot.error}");
             }
 
-            if (_allVols.isEmpty) {
-              _allVols = snapshot.data!;
-              _filteredVols = _allVols;
+            if (_lesVols.isEmpty) {
+              _lesVols = snapshot.data!;
+              _filtrerVols = _lesVols;
             }
 
-            return _filteredVols.isEmpty
+            return _filtrerVols.isEmpty
               ? const Center(child: Text("Aucun vol trouvé :("))
               : Expanded(
                 child: ListTileTheme(
                   data: Style.styleElement,
                   child: ListView.builder(
-                    itemCount: _filteredVols.length,
+                    itemCount: _filtrerVols.length,
                     itemBuilder: (context, index) {
-                      final vol = _filteredVols[index];
+                      final vol = _filtrerVols[index];
                       return ListTile(
                         leading: CircleAvatar(
                           child: Text(vol.numero.toString()),

@@ -5,6 +5,8 @@ import '../API/Correspondance.dart';
 import '../resources/json.dart';
 import 'styles.dart';
 
+// La liste des choix pour la recherche, définissant la méthode de recherche,
+// le "&" recherche sur l'aéroport de départ & d'arrivée, et est celui qui est activé de base
 const List<Widget> choix = <Widget>[
   Text("Départ"),
   Text("&"),
@@ -47,6 +49,7 @@ class _ChoixVilleState extends State<ChoixVille> {
   }
 }
 
+// Donne les détails sur les correspondances lorsque l'on clique sur un vol dans la liste
 class DetailCorrespondance extends StatelessWidget {
   final Correspondance correspondance;
 
@@ -88,10 +91,10 @@ class Correspondances extends StatefulWidget {
 }
 
 class _CorrespondancesState extends State<Correspondances> {
-  final SearchController _searchController = SearchController();
-  List<Correspondance> _allCorrespondances = [];
-  List<Correspondance> _filteredCorrespondances = [];
-  List<Vol> _allVols = [];
+  final SearchController _controllerRecherche = SearchController();
+  List<Correspondance> _lesCorrespondances = [];
+  List<Correspondance> _filtrerCorrespondances = [];
+  List<Vol> _lesVols = [];
   late Future<List<Vol>> _futureCorrespondances;
 
   @override
@@ -100,9 +103,9 @@ class _CorrespondancesState extends State<Correspondances> {
     _futureCorrespondances = getVols();
   }
 
-  void onSearchChanged(String query) {
+  void rechercheChanged(String query) {
     setState(() {
-      _filteredCorrespondances = _allCorrespondances.where((vol) {
+      _filtrerCorrespondances = _lesCorrespondances.where((vol) {
         final q = query.toLowerCase();
         return (choixActuel <= 1 ? vol.contientDepart(q) : false) ||
             (choixActuel >= 1 ? vol.contientArrivee(q) : false);
@@ -111,12 +114,12 @@ class _CorrespondancesState extends State<Correspondances> {
   }
 
   void _onChoixChanged() {
-    onSearchChanged(_searchController.text);
+    rechercheChanged(_controllerRecherche.text);
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
+    _controllerRecherche.dispose();
     super.dispose();
   }
 
@@ -130,11 +133,11 @@ class _CorrespondancesState extends State<Correspondances> {
             SizedBox(width: 10),
             Expanded(
               child: SearchBar(
-                controller: _searchController,
+                controller: _controllerRecherche,
                 leading: const Icon(Icons.search),
                 hintText: "Recherchez une ville ou un pays",
                 backgroundColor: WidgetStateProperty.all(Style.couleurBarreRecherche),
-                onChanged: onSearchChanged,
+                onChanged: rechercheChanged,
                 shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
               ),
             ),
@@ -154,21 +157,21 @@ class _CorrespondancesState extends State<Correspondances> {
               return Text("Ca marche pas :( : ${snapshot.error}");
             }
 
-            if (_allCorrespondances.isEmpty) {
-              _allVols = snapshot.data!;
-              _allCorrespondances = Correspondance.genererCorrespondances(_allVols);
-              _filteredCorrespondances = _allCorrespondances;
+            if (_lesCorrespondances.isEmpty) {
+              _lesVols = snapshot.data!;
+              _lesCorrespondances = Correspondance.genererCorrespondances(_lesVols);
+              _filtrerCorrespondances = _lesCorrespondances;
             }
 
-            return _filteredCorrespondances.isEmpty
+            return _filtrerCorrespondances.isEmpty
               ? const Center(child: Text("Aucun vol trouvé :("))
               : Expanded(
               child: ListTileTheme(
                 data: Style.styleElement,
                 child: ListView.builder(
-                  itemCount: _filteredCorrespondances.length,
+                  itemCount: _filtrerCorrespondances.length,
                   itemBuilder: (context, index) {
-                    final correspondance = _filteredCorrespondances[index];
+                    final correspondance = _filtrerCorrespondances[index];
                     return ListTile(
                       leading: CircleAvatar(
                         child: Text(correspondance.numero.toString()),

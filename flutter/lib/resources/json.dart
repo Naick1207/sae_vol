@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import '../API/Vol.dart';
 import '../API/Aeroport.dart';
 
+// Récupère les vols
 Future<List<Vol>> getVols() async{
   final response = await http.get(
     Uri.parse('${Config.apiUrl}/api/Vols'),
@@ -25,6 +26,7 @@ Future<List<Vol>> getVols() async{
   }
 }
 
+// Récupère les aéroports
 Future<List<Aeroport>> getAeroports() async{
   final response = await http.get(
     Uri.parse('${Config.apiUrl}/api/Aeroports'),
@@ -43,6 +45,7 @@ Future<List<Aeroport>> getAeroports() async{
   }
 }
 
+// Récupère un aéroport selon son code (sert pour lier les vols avec leurs aéroports)
 Future<Aeroport> getAeroport(int code) async{
   final response = await http.get(
     Uri.parse('${Config.apiUrl}/api/Aeroports/$code'),

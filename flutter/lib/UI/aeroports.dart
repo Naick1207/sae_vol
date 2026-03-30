@@ -11,9 +11,9 @@ class Aeroports extends StatefulWidget{
 }
 
 class _AeroportsState extends State<Aeroports> {
-  final SearchController _searchController = SearchController();
-  List<Aeroport> _allAeroports = [];
-  List<Aeroport> _filteredAeroports = [];
+  final SearchController _controllerRecherche = SearchController();
+  List<Aeroport> _lesAeroports = [];
+  List<Aeroport> _fitreAeroports = [];
   late Future<List<Aeroport>> _futureAeroports;
 
   @override
@@ -22,9 +22,9 @@ class _AeroportsState extends State<Aeroports> {
     _futureAeroports = getAeroports();
   }
 
-  void _onSearchChanged(String query) {
+  void _rechercheChanged(String query) {
     setState(() {
-      _filteredAeroports = _allAeroports.where((aeroport) {
+      _filtreAeroports = _lesAeroports.where((aeroport) {
         final q = query.toLowerCase();
         return aeroport.ville.toLowerCase().contains(q) == true ||
             aeroport.nom.toLowerCase().contains(q) == true ||
@@ -35,7 +35,7 @@ class _AeroportsState extends State<Aeroports> {
 
   @override
   void dispose() {
-    _searchController.dispose();
+    _controllerRecherche.dispose();
     super.dispose();
   }
 
@@ -47,11 +47,11 @@ class _AeroportsState extends State<Aeroports> {
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: SearchBar(
-            controller: _searchController,
+            controller: _controllerRecherche,
             leading: const Icon(Icons.search),
             hintText: "Recherchez un nom d'aéroport, une ville ou un pays",
             backgroundColor: WidgetStateProperty.all(Style.couleurBarreRecherche),
-            onChanged: _onSearchChanged,
+            onChanged: _rechercheChanged,
             shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
           )
         ),
@@ -66,20 +66,20 @@ class _AeroportsState extends State<Aeroports> {
               return Text("Ca marche pas :( : ${snapshot.error}");
             }
 
-            if (_allAeroports.isEmpty) {
-              _allAeroports = snapshot.data!;
-              _filteredAeroports = _allAeroports;
+            if (_lesAeroports.isEmpty) {
+              _lesAeroports = snapshot.data!;
+              _filtreAeroports = _lesAeroports;
             }
 
-            return _filteredAeroports.isEmpty
+            return _filtrerAeroports.isEmpty
               ? const Center(child: Text("Aucun aéroport trouvé :("))
               : Expanded(
                 child: ListTileTheme(
                   data: Style.styleElement,
                   child: ListView.builder (
-                    itemCount: _filteredAeroports.length,
+                    itemCount: _filtrerAeroports.length,
                     itemBuilder: (context, index) {
-                      final aeroport = _filteredAeroports[index];
+                      final aeroport = _filtrerAeroports[index];
                       return ListTile(
                         leading: CircleAvatar(
                           child: Text(aeroport.code.toString()),

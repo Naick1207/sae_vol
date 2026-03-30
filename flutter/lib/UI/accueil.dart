@@ -4,6 +4,7 @@ import '../API/Aeroport.dart';
 import '../API/Vol.dart';
 import 'styles.dart';
 
+// Permet d'afficher un bloc avec une donnée de l'API (nombre de vols, d'aéroports)
 class CardAccueil extends StatelessWidget {
   const CardAccueil({required this.titre, required this.chiffre});
   final String titre;
