@@ -1,4 +1,0 @@
-flask-restx
-flask_sqlalchemy
-dotenv
-flask_cors
