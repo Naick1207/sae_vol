@@ -1,47 +1,39 @@
-import { getData } from '../../service/api.js';
-
-export async function renderDetailsVol(v) { 
-    const aeroports = await getData('/api/Aeroports');
-
-    const nomDep = aeroports.find(a => a.code == v.codeAeroportD)?.nom || `Code ${v.codeAeroportD}`;
-    const nomArr = aeroports.find(a => a.code == v.codeAeroportA)?.nom || `Code ${v.codeAeroportA}`;
-
+export function renderItinerary(v1, v2) {
+    const escaleMin = (new Date(v2.tempsD) - new Date(v1.tempsA)) / 60000;
     return `
-        <div class="modal-header">
-            <h2 class="modal-title">Détails du Vol ${v.numero}</h2>
-            <button class="modal-close" onclick="closeModal()">×</button>
-        </div>
-        <div class="details-grid">
-            <div class="detail-item"><strong>Compagnie:</strong> ${v.compagnie}</div>
-            <div class="detail-item">
-                <strong>Départ:</strong> ${nomDep} <br>
-                <small>${v.tempsD.replace('T', ' à ')} (Terminal ${v.terminalD})</small>
+        <h2 class="modal-title">Détails du voyage</h2>
+        <div class="itinerary-details">
+            <div class="step">
+                <strong>Départ : ${v1.codeAeroportD}</strong><br>
+                <small>${v1.tempsD.replace('T', ' ')} (Vol ${v1.numero})</small>
             </div>
-            <hr>
-            <div class="detail-item">
-                <strong>Arrivée:</strong> ${nomArr} <br>
-                <small>${v.tempsA.replace('T', ' à ')} (Terminal ${v.terminalA})</small>
+            <div class="step-connector">
+                Escale à ${v1.codeAeroportA} (${Math.floor(escaleMin/60)}h ${Math.floor(escaleMin%60)}min)
+            </div>
+            <div class="step">
+                <strong>Arrivée : ${v2.codeAeroportA}</strong><br>
+                <small>${v2.tempsA.replace('T', ' ')} (Vol ${v2.numero})</small>
             </div>
         </div>
-        <div class="form-actions">
-            <button class="btn-secondary" onclick="closeModal()">Fermer</button>
-        </div>
+        <div class="form-actions"><button class="btn-secondary" onclick="closeModal()">Fermer</button></div>
+    `;
+}
+
+export async function renderDetailsVol(v) {
+    return `
+        <h2 class="modal-title">Vol ${v.numero}</h2>
+        <p>Compagnie: ${v.compagnie}</p>
+        <p>Départ: ${v.codeAeroportD} à ${v.tempsD}</p>
+        <p>Arrivée: ${v.codeAeroportA} à ${v.tempsA}</p>
+        <button class="btn-secondary" onclick="closeModal()">Fermer</button>
     `;
 }
 
 export async function renderDetailsAeroport(a) {
     return `
-        <div class="modal-header">
-            <h2 class="modal-title">Aéroport : ${a.nom}</h2>
-            <button class="modal-close" onclick="closeModal()">×</button>
-        </div>
-        <div class="details-grid">
-            <div class="detail-item"><strong>Code:</strong> ${a.code}</div>
-            <div class="detail-item"><strong>Ville:</strong> ${a.ville}</div>
-            <div class="detail-item"><strong>Pays:</strong> ${a.pays}</div>
-        </div>
-        <div class="form-actions">
-            <button class="btn-secondary" onclick="closeModal()">Fermer</button>
-        </div>
+        <h2 class="modal-title">${a.nom}</h2>
+        <p>Ville: ${a.ville} (${a.pays})</p>
+        <p>Code: ${a.code}</p>
+        <button class="btn-secondary" onclick="closeModal()">Fermer</button>
     `;
 }

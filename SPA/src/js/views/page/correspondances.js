@@ -6,67 +6,29 @@ export async function renderCorrespondances() {
         getData('/api/Aeroports')
     ]);
 
-    const findAeroNom = (code) => aeroports.find(a => a.code == code)?.nom || `Code ${code}`;
+    const getCity = (code) => aeroports.find(a => a.code == code)?.ville || code;
+    const getAeroNom = (code) => aeroports.find(a => a.code == code)?.nom || code;
 
-    let html = `
-        <div class="table-container">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Trajet Complet</th>
-                        <th>Escale</th>
-                        <th>Durée Escale</th>
-                        <th>Détails</th>
-                    </tr>
-                </thead>
-                <tbody>
-    `;
+    let html = `<div class="table-container"><table class="data-table">
+        <thead><tr><th>TRAJET</th><th>ESCALE</th><th>ATTENTE</th><th>ACTIONS</th></tr></thead><tbody>`;
 
-    let nbCorrespondances = 0;
-
-    // Double boucle pour comparer chaque vol avec tous les autres
-    vols.forEach(volA => {
-        vols.forEach(volB => {
-            // Règle 1: L'arrivée de A est le départ de B
-            // Règle 2: Ce n'est pas le même vol (numéro ou compagnie différente)
-            if (volA.codeAeroportA === volB.codeAeroportD && (volA.numero !== volB.numero || volA.compagnie !== volB.compagnie)) {
-                
-                const dateArriveeA = new Date(volA.tempsA);
-                const dateDepartB = new Date(volB.tempsD);
-                
-                // Règle 3: Le vol B part après le vol A
-                const diffMs = dateDepartB - dateArriveeA;
-                const diffMinutes = Math.floor(diffMs / (1000 * 60));
-
-                // On n'affiche que si l'escale dure entre 45 minutes et 24 heures
-                if (diffMinutes >= 45 && diffMinutes <= 1440) {
-                    nbCorrespondances++;
-                    const heures = Math.floor(diffMinutes / 60);
-                    const minutes = diffMinutes % 60;
-
-                    html += `
-                        <tr>
-                            <td>
-                                <strong>${findAeroNom(volA.codeAeroportD)}</strong> ✈️ 
-                                <strong>${findAeroNom(volB.codeAeroportA)}</strong>
-                            </td>
-                            <td><span class="badge">${findAeroNom(volA.codeAeroportA)}</span></td>
-                            <td>${heures}h ${minutes}min</td>
-                            <td>
-                                <small>1er vol: ${volA.compagnie} (${volA.numero})</small><br>
-                                <small>2ème vol: ${volB.compagnie} (${volB.numero})</small>
-                            </td>
-                        </tr>
-                    `;
+    let count = 0;
+    vols.forEach(vA => {
+        vols.forEach(vB => {
+            if (vA.codeAeroportA === vB.codeAeroportD && (vA.numero !== vB.numero || vA.compagnie !== vB.compagnie)) {
+                const diffMin = (new Date(vB.tempsD) - new Date(vA.tempsA)) / 60000;
+                if (diffMin >= 45 && diffMin <= 1440) {
+                    count++;
+                    html += `<tr>
+                        <td><strong>${getCity(vA.codeAeroportD)}</strong> ➔ <strong>${getCity(vB.codeAeroportA)}</strong></td>
+                        <td>${getAeroNom(vA.codeAeroportA)}</td>
+                        <td><span class="badge">${Math.floor(diffMin/60)}h ${Math.floor(diffMin%60)}min</span></td>
+                        <td><button class="btn-icon" onclick="viewItinerary('${vA.numero}','${vA.compagnie}','${vA.tempsD}','${vB.numero}','${vB.compagnie}','${vB.tempsD}')"> Détails</button></td>
+                    </tr>`;
                 }
             }
         });
     });
 
-    if (nbCorrespondances === 0) {
-        return `<p class="empty">Aucune correspondance trouvée pour le moment.</p>`;
-    }
-
-    html += `</tbody></table></div>`;
-    return html;
+    return count > 0 ? html + `</tbody></table></div>` : `<p class="empty">Aucune correspondance.</p>`;
 }

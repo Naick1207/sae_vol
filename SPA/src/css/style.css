@@ -1,716 +1,206 @@
 /* ==========================================================================
-   WILSON COMPAGNIE - GLOBAL STYLES
-   Inspired by Sky Desk Mockups
-   Thème : Sombre, Moderne, Professionnel
+   WILSON COMPAGNIE - GLOBAL STYLES (MODERN DARK THEME)
    ========================================================================== */
 
-/* --- Variables --- */
 :root {
-    /* Couleurs de fond */
-    --bg-app: #090a10; /* Fond principal de l'application */
-    --bg-sidebar: #0f1118; /* Fond de la sidebar */
-    --bg-card: #111827; /* Fond des cartes et du tableau */
-    --bg-input: #1e293b; /* Fond des champs de formulaire */
-    
-    /* Couleurs de texte */
-    --text-main: #ffffff; /* Texte principal (blanc) */
-    --text-sec: #8085a6; /* Texte secondaire (gris-bleu) */
-    --text-active: #ffffff; /* Texte pour l'élément actif de la navigation */
-    
-    /* Couleurs d'accent */
-    --accent: #3b82f6; /* Bleu vif (boutons primaires, liens) */
-    --accent-hov: #1d4ed8; /* Bleu plus sombre pour le survol */
-    
-    /* Couleurs de statut */
-    --status-green: #10b981; /* À l'heure */
-    --status-green-bg: #064e3b; /* Fond À l'heure */
-    --status-orange: #f59e0b; /* Retardé */
-    --status-orange-bg: #78350f; /* Fond Retardé */
-    --status-red: #ef4444; /* Annulé */
-    --status-red-bg: #7f1d1d; /* Fond Annulé */
-    
-    /* Bordures */
-    --border: #1e293b; /* Bordure par défaut */
-    --border-hov: #334155; /* Bordure au survol */
-    
-    /* Police */
-    --font: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    --bg-app: #0f172a;
+    --bg-side: #1e293b;
+    --bg-card: #1e293b;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --text-main: #f8fafc;
+    --text-dim: #94a3b8;
+    --danger: #ef4444;
+    --success: #10b981;
+    --border: #334155;
+    --radius: 12px;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
-/* --- Reset & Base --- */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', sans-serif; }
 
-body {
-    font-family: var(--font);
-    background-color: var(--bg-app);
-    color: var(--text-main);
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
+body { 
+    background: var(--bg-app); 
+    color: var(--text-main); 
+    line-height: 1.5;
+    overflow-x: hidden;
 }
 
-/* ==========================================================================
-   LAYOUT
-   ========================================================================== */
+/* --- LAYOUT --- */
+.app-container { display: flex; min-height: 100vh; }
 
-.app-container {
-    display: flex;
-    height: 100vh;
-    width: 100%;
-}
-
-.main-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-}
-
-#content {
-    padding: 2.5rem 3.5rem;
-    flex: 1;
-}
-
-/* ==========================================================================
-   SIDEBAR
-   ========================================================================== */
-
-.sidebar {
-    width: 280px;
-    background-color: var(--bg-sidebar);
-    display: flex;
+.sidebar { 
+    width: 260px; 
+    background: var(--bg-side); 
+    padding: 2rem 1.5rem; 
+    display: flex; 
     flex-direction: column;
     border-right: 1px solid var(--border);
-    padding-bottom: 2rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
 }
 
-.logo {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-main);
-    padding: 2.5rem;
+.main-wrapper { flex: 1; padding: 2rem 3rem; }
+
+/* --- NAVIGATION --- */
+.logo { 
+    font-size: 1.3rem; 
+    font-weight: 800; 
+    margin-bottom: 3rem; 
+    color: var(--accent);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-}
-.logo span { font-weight: 400; }
-
-.navigation {
-    flex: 1;
-    padding: 0 1rem;
+    gap: 10px;
 }
 
-.nav-group-title {
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    color: var(--text-sec);
-    margin: 2.5rem 0 1rem;
-    padding-left: 1rem;
+.navigation ul { list-style: none; }
+.navigation li { margin-bottom: 0.5rem; }
+.navigation a { 
+    color: var(--text-dim); 
+    text-decoration: none; 
+    padding: 0.8rem 1rem;
+    display: block;
+    border-radius: var(--radius);
+    transition: all 0.2s;
 }
+.navigation a:hover { background: #334155; color: var(--text-main); }
+.navigation a.active { background: var(--accent); color: white; font-weight: 600; }
 
-.sidebar nav ul { list-style: none; }
-
-.sidebar nav a {
-    color: var(--text-sec);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    border-radius: 10px;
-    transition: background 0.2s, color 0.2s;
-    font-weight: 500;
+/* --- HEADER --- */
+#page-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 2.5rem; 
 }
+#header-title { font-size: 1.8rem; font-weight: 700; }
 
-.sidebar nav a.active {
-    background-color: var(--accent-hov);
-    color: var(--text-active);
-}
-
-.sidebar nav a:hover:not(.active) {
-    background-color: var(--bg-input);
-    color: var(--text-main);
-}
-
-/* Icônes de navigation */
-.sidebar nav a .icon {
-    font-size: 1.2rem;
-}
-
-.nav-footer {
-    padding: 0 1rem;
-    margin-top: auto;
-}
-
-/* ==========================================================================
-   PAGE HEADER
-   ========================================================================== */
-
-#page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2rem 3.5rem;
-    border-bottom: 1px solid var(--border);
-}
-
-#header-title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: var(--text-main);
-}
-
-/* ==========================================================================
-   BOUTONS (GLOBAL)
-   ========================================================================== */
-
-.btn-primary {
-    background-color: var(--accent);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 0.9rem;
+/* --- BOUTONS --- */
+.btn-primary { 
+    background: var(--accent); 
+    color: white; 
+    border: none; 
+    padding: 0.6rem 1.2rem; 
+    border-radius: var(--radius); 
+    cursor: pointer; 
     font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+    transition: 0.2s;
 }
-.btn-primary:hover { background-color: var(--accent-hov); }
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
 
-.btn-secondary {
-    background-color: transparent;
-    color: var(--text-main);
-    padding: 0.75rem 1.5rem;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: border 0.2s;
-}
-.btn-secondary:hover { border-color: var(--border-hov); }
+.btn-secondary { background: #475569; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: var(--radius); cursor: pointer; }
 
-/* ==========================================================================
-   DASHBOARD CARDS
-   ========================================================================== */
-
-.dashboard-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.75rem;
-    margin-bottom: 2.5rem;
-}
-
-.card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.75rem;
-}
-
-.card-title {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    color: var(--text-sec);
-    margin-bottom: 1rem;
-}
-
-.card-value {
-    font-size: 2.75rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 0.5rem;
-}
-
-.card-subtitle {
-    font-size: 0.9rem;
-}
-.text-green { color: var(--status-green); }
-.text-orange { color: var(--status-orange); }
-.text-red { color: var(--status-red); }
-
-/* ==========================================================================
-   FILTRES (RECHERCHE & SELECTS)
-   ========================================================================== */
-
-.filters-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2.5rem;
-    gap: 1.5rem;
-}
-
-.search-container {
-    position: relative;
-    flex: 1;
-}
-.search-container input {
-    width: 100%;
-    background-color: var(--bg-input);
-    color: var(--text-main);
-    border: 1px solid var(--border);
-    padding: 0.85rem 1rem 0.85rem 3rem;
-    border-radius: 10px;
-    font-size: 0.95rem;
-}
-.search-icon {
-    position: absolute;
-    left: 1.15rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-sec);
-    font-size: 1rem;
-}
-
-.select-filters {
-    display: flex;
-    gap: 1.5rem;
-}
-.select-filters select {
-    background-color: var(--bg-input);
-    color: var(--text-main);
-    border: 1px solid var(--border);
-    padding: 0.85rem 2rem 0.85rem 1.15rem;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    appearance: none; /* Cache la flèche par défaut */
-}
-
-.reset-btn {
-    background-color: var(--bg-card);
-    color: var(--text-main);
-    border: 1px solid var(--border);
-    padding: 0.85rem 1.5rem;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 0.95rem;
-}
-.reset-btn:hover { border-color: var(--border-hov); }
-
-/* ==========================================================================
-   TABLEAU DE DONNÉES (`table.data-table`)
-   ========================================================================== */
-
-.table-container {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-}
-
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.data-table thead {
-    background-color: var(--bg-sidebar);
-}
-
-.data-table th {
-    text-align: left;
-    text-transform: uppercase;
-    color: var(--text-sec);
-    font-size: 0.8rem;
-    padding: 1.75rem 1.25rem;
-    border-bottom: 1px solid var(--border);
-    font-weight: 600;
-}
-
-.data-table tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.2s;
-}
-.data-table tbody tr:hover { background-color: #1a2333; }
-.data-table tbody tr:last-child { border-bottom: none; }
-
-.data-table td {
-    padding: 1.5rem 1.25rem;
-    vertical-align: middle;
-}
-
-/* Styles spécifiques aux colonnes des vols */
-.col-id { color: var(--accent); font-weight: 600; }
-.col-compagnie { color: var(--text-main); font-weight: 600; }
-
-.location-cell, .datetime-cell {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
-.code { font-weight: 600; color: var(--text-main); }
-.city-country, .date { color: var(--text-sec); font-size: 0.85rem; }
-.time { font-weight: 600; color: var(--text-main); }
-
-.col-terminal { color: var(--text-main); font-weight: 600; }
-
-/* Styles spécifiques aux colonnes des aéroports */
-.col-code-iata { color: var(--accent); font-weight: 600; }
-.col-nom-aeroport { color: var(--text-main); font-weight: 600; }
-/* Style pour le bouton supprimé désactivé */
-.btn-disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-    filter: grayscale(1);
-}
-
-.btn-disabled:hover {
-    background: transparent; /* Empêche l'effet de survol */
-}
-
-/* Statuts */
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1.25rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-.status-active {
-    background-color: var(--status-green-bg);
-    color: var(--status-green);
-}
-.status-delayed {
-    background-color: var(--status-orange-bg);
-    color: var(--status-orange);
-}
-.status-cancelled {
-    background-color: var(--status-red-bg);
-    color: var(--status-red);
-}
-
-/* Actions */
-.actions-cell {
-    display: flex;
-    gap: 0.75rem;
-}
 .btn-icon {
-    background: transparent;
+    background: #334155;
     border: none;
-    color: var(--text-sec);
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 0.6rem;
-    border-radius: 8px;
-    transition: color 0.2s, background 0.2s;
-}
-.btn-icon:hover {
-    color: var(--text-main);
-    background-color: var(--bg-input);
-}
-
-/* ================= =========================================================
-   PAGINATION
-   ========================================================================== */
-
-.pagination-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2rem;
-    padding: 0 1rem;
-}
-
-.pagination-info {
-    font-size: 0.9rem;
-    color: var(--text-sec);
-}
-
-.pagination-buttons {
-    display: flex;
-    gap: 0.5rem;
-}
-.pagination-btn {
-    background-color: var(--bg-card);
-    color: var(--text-main);
-    border: 1px solid var(--border);
-    padding: 0.75rem 1.15rem;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-.pagination-btn:hover:not(.active) { border-color: var(--border-hov); }
-.pagination-btn.active {
-    background-color: var(--accent);
-    border-color: var(--accent);
     color: white;
-}
-
-/* ==========================================================================
-   MODALE (`#modal-container`, `#modal-content`)
-   ========================================================================== */
-
-#modal-container {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(10px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    padding: 2rem;
-}
-
-#modal-content {
-    background-color: var(--bg-card);
-    padding: 3rem;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 700px;
-    position: relative;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2.5rem;
-}
-
-.modal-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-main);
-}
-
-.modal-close {
-    background: transparent;
-    border: none;
-    color: var(--text-main);
-    font-size: 1.75rem;
+    padding: 8px;
+    border-radius: 8px;
     cursor: pointer;
+    transition: 0.2s;
 }
+.btn-icon:hover { background: var(--accent); }
+.btn-icon.btn-disabled { opacity: 0.3; cursor: not-allowed; }
 
-.hidden { display: none !important; }
-
-/* ================= =========================================================
-   FORMULAIRES (`.form-vols`)
-   ========================================================================== */
-
-.form-vols {
-    display: flex;
-    flex-direction: column;
-    gap: 1.75rem;
-}
-
-.form-section-title {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    color: var(--text-sec);
-    font-weight: 600;
-    margin: 1.75rem 0 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.75rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-}
-
-.form-group label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    color: var(--text-sec);
-    font-weight: 600;
-}
-
-.form-vols input, .form-vols select {
-    background-color: var(--bg-input);
-    color: var(--text-main);
+/* --- TABLEAUX --- */
+.table-container { 
+    background: var(--bg-card); 
+    border-radius: var(--radius); 
     border: 1px solid var(--border);
-    padding: 0.9rem 1.15rem;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    width: 100%;
-}
-.form-vols input:focus, .form-vols select:focus {
-    outline: none;
-    border-color: var(--accent);
+    overflow: hidden;
+    box-shadow: var(--shadow);
 }
 
-.locked-input {
-    background-color: var(--bg-card);
-    color: #777;
-    cursor: not-allowed;
-    border-color: #334155;
+.data-table { width: 100%; border-collapse: collapse; text-align: left; }
+.data-table th { 
+    background: #1e293b; 
+    padding: 1rem; 
+    color: var(--text-dim); 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em;
 }
+.data-table td { padding: 1rem; border-top: 1px solid var(--border); vertical-align: middle; }
+.data-table tr:hover { background: #33415544; }
 
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 3rem;
+/* --- DASHBOARD STATS --- */
+.dashboard-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+    gap: 1.5rem; 
+    margin-bottom: 3rem; 
 }
-
-/* ================= =========================================================
-   FORMULAIRES (`.details-vol`, `.details-aeroport`)
-   ========================================================================== */
-
-   .details-grid {
-    display: grid;
-    gap: 1.5rem;
-    color: var(--text-main);
-}
-.detail-item {
-    font-size: 1.1rem;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border);
-}
-.detail-item strong {
-    color: var(--text-sec);
-    margin-right: 1rem;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-}
-
-/* --- Dashboard & Stats Cards --- */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.stat-card {
-    background: #1a1d24; /* Fond sombre comme l'image */
-    border-radius: 12px;
-    padding: 1.5rem;
+.stat-card { 
+    background: var(--bg-card); 
+    padding: 1.5rem; 
+    border-radius: var(--radius); 
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     gap: 1rem;
-    border: 1px solid #2a2e37;
-    transition: transform 0.2s;
 }
+.stat-icon { font-size: 2rem; background: #334155; padding: 10px; border-radius: 10px; }
+.stat-label { color: var(--text-dim); font-size: 0.9rem; display: block; }
+.stat-value { font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
 
-.stat-card:hover {
-    transform: translateY(-3px);
-}
-
-.stat-icon {
-    font-size: 2.5rem;
-    background: rgba(58, 134, 255, 0.1);
-    padding: 0.5rem;
-    border-radius: 10px;
-}
-
-.stat-content {
-    display: flex;
-    flex-direction: column;
-}
-
-.stat-label {
-    color: #8a92a6;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.stat-value {
-    color: #ffffff;
-    font-size: 2.2rem;
-    font-weight: 700;
-}
-
-/* --- Conteneur Principal de la recherche --- */
+/* --- RECHERCHE ACCUEIL --- */
 .search-section {
-    background: #1a1d24; /* Fond sombre carte */
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid #2a2e37;
-    margin-bottom: 2rem;
+    background: #1e293b;
+    padding: 2rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
 }
-
-/* --- Barre de recherche (Input + Icone) --- */
-.search-bar-container {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    width: 100%;
-}
-
-.search-input-group {
-    position: relative;
-    flex-grow: 1;
-}
-
-.search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #8a92a6;
-    font-size: 1.1rem;
-}
-
-/* Style de l'input texte */
+.search-bar-container { display: flex; gap: 1rem; margin-top: 1rem; }
+.search-input-group { flex: 1; position: relative; }
 .search-input-group input {
     width: 100%;
-    padding: 12px 12px 12px 42px; /* Espace pour la loupe */
-    background: #0f1114; /* Fond plus sombre */
-    border: 1px solid #2a2e37;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    background: #0f172a;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: white;
+}
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5; }
+
+/* --- MODAL --- */
+#modal-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
+    z-index: 1000; backdrop-filter: blur(4px);
+}
+#modal-content {
+    background: var(--bg-card); width: 100%; max-width: 500px;
+    padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border);
+    position: relative; animation: slideUp 0.3s ease-out;
+}
+.hidden { display: none !important; }
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* --- FORMULAIRES --- */
+.form-vols { display: flex; flex-direction: column; gap: 1.2rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.form-group label { font-size: 0.9rem; color: var(--text-dim); }
+.form-group input, .form-group select {
+    padding: 0.8rem;
+    background: #0f172a;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    color: #ffffff;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.2s;
+    color: white;
 }
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem; }
 
-.search-input-group input:focus {
-    border-color: #3a86ff;
-}
+/* --- DETAILS --- */
+.details-grid { display: flex; flex-direction: column; gap: 1rem; }
+.detail-item { padding-bottom: 0.5rem; border-bottom: 1px solid #334155; }
+.detail-item strong { color: var(--accent); margin-right: 5px; }
 
-/* --- Groupe de boutons Toggle (Départs/Arrivées) --- */
-.toggle-group {
-    display: flex;
-    background: #0f1114;
-    padding: 4px;
-    border-radius: 8px;
-    border: 1px solid #2a2e37;
-    height: 46px; /* Aligné sur la hauteur de l'input */
-    align-items: center;
-}
-
-.btn-toggle {
-    padding: 8px 16px;
-    border: none;
-    background: transparent;
-    color: #8a92a6;
-    cursor: pointer;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-/* État quand le bouton est sélectionné */
-.btn-toggle.active {
-    background: #3a86ff;
-    color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.btn-toggle:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-}
+/* --- SCROLLBAR --- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-app); }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #475569; }

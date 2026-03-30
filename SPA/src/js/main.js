@@ -1,12 +1,11 @@
-import { formToJSON } from './utils.js';
-import { renderVols } from './views/page/vols.js';
 import { renderAccueil } from './views/page/accueil.js';
-import { renderFormVol } from './views/form/nouveauVol.js';
+import { renderVols } from './views/page/vols.js';
 import { renderAeroports } from './views/page/aeroports.js';
-import { renderFormAeroport } from './views/form/nouvelAeroport.js'; 
 import { renderCorrespondances } from './views/page/correspondances.js';
-import { postData, deleteData, putData, getData } from './service/api.js';
-import { renderDetailsVol, renderDetailsAeroport } from './views/page/details.js';
+import { renderFormVol } from './views/form/nouveauVol.js';
+import { renderFormAeroport } from './views/form/nouvelAeroport.js';
+import { renderDetailsVol, renderDetailsAeroport, renderItinerary } from './views/page/details.js';
+import { getData, postData, putData, deleteData } from './service/api.js';
 
 const contentDiv = document.getElementById('content');
 const headerTitle = document.getElementById('header-title');
@@ -14,75 +13,62 @@ const headerActions = document.getElementById('header-actions');
 const modal = document.getElementById('modal-container');
 const modalContent = document.getElementById('modal-content');
 
-// --- LOGIQUE FILTRAGE VOLS ---
-let currentDirection = 'D'; // 'D' pour Départ, 'A' pour Arrivée
-
-window.setDirection = (dir) => {
-    currentDirection = dir;
-    document.getElementById('btn-dep').classList.toggle('active', dir === 'D');
-    document.getElementById('btn-arr').classList.toggle('active', dir === 'A');
-    filterTableVols(); 
-};
-
-window.filterTableVols = () => {
-    const term = document.getElementById('filter-vols').value.toLowerCase();
-    const rows = document.querySelectorAll('.vol-row');
-
-    rows.forEach(row => {
-        const num = row.getAttribute('data-num').toLowerCase();
-        const comp = row.getAttribute('data-comp').toLowerCase();
-        const aeroDep = row.getAttribute('data-dep').toLowerCase();
-        const aeroArr = row.getAttribute('data-arr').toLowerCase();
-
-        let matchesSearch = false;
-        
-        if (currentDirection === 'D') {
-            // En mode départ, on ignore la colonne arrivée
-            matchesSearch = num.includes(term) || comp.includes(term) || aeroDep.includes(term);
-        } else {
-            // En mode arrivée, on ignore la colonne départ
-            matchesSearch = num.includes(term) || comp.includes(term) || aeroArr.includes(term);
-        }
-
-        row.style.display = matchesSearch ? "" : "none";
-    });
-};
-
-// --- NAVIGATION ---
-function setupHeader(title, actions = '') {
-    headerTitle.innerHTML = title;
-    headerActions.innerHTML = actions;
-}
-
 async function router() {
     const hash = window.location.hash || '#/';
-    if (hash === '#/Vols') {
-        setupHeader('Vols', '<button class="btn-primary" onclick="showAddVolForm()">+ Nouveau vol</button>');
-        contentDiv.innerHTML = await renderVols();
-    } 
-    else if (hash === '#/Aeroports') {
-        setupHeader('Aéroports', '<button class="btn-primary" onclick="showAddAeroportForm()">+ Ajouter Aéroport</button>');
-        contentDiv.innerHTML = await renderAeroports();
-    }
-    else if (hash === '#/Correspondances') {
-        setupHeader('Correspondances');
-        contentDiv.innerHTML = await renderCorrespondances();
-    }
-    else {
-        setupHeader('Tableau de bord');
-        contentDiv.innerHTML = await renderAccueil();
+    headerActions.innerHTML = '';
+
+    switch(hash) {
+        case '#/Vols':
+            headerTitle.innerText = 'Gestion des Vols';
+            headerActions.innerHTML = '<button class="btn-primary" onclick="showAddVolForm()">+ Nouveau vol</button>';
+            contentDiv.innerHTML = await renderVols();
+            break;
+        case '#/Aeroports':
+            headerTitle.innerText = 'Aéroports';
+            headerActions.innerHTML = '<button class="btn-primary" onclick="showAddAeroportForm()">+ Nouvel Aéroport</button>';
+            contentDiv.innerHTML = await renderAeroports();
+            break;
+        case '#/Correspondances':
+            headerTitle.innerText = 'Correspondances';
+            contentDiv.innerHTML = await renderCorrespondances();
+            break;
+        default:
+            headerTitle.innerText = 'Tableau de bord';
+            contentDiv.innerHTML = await renderAccueil();
     }
 }
 
 window.addEventListener('hashchange', router);
 window.addEventListener('load', router);
 
-// --- MODALE ---
+// --- FONCTIONS GLOBALES (Accessibles via onclick) ---
 window.closeModal = () => modal.classList.add('hidden');
 
-// --- ACTIONS CRUD ---
-window.showAddVolForm = () => {
-    modalContent.innerHTML = renderFormVol();
+window.showAddVolForm = async () => {
+    const aeroports = await getData('/api/Aeroports');
+    modalContent.innerHTML = renderFormVol(null, aeroports);
+    modal.classList.remove('hidden');
+};
+
+window.editVol = async (num, comp, date) => {
+    const [vol, aeroports] = await Promise.all([
+        getData(`/api/Vol/${num}/${comp}/${encodeURIComponent(date)}`),
+        getData('/api/Aeroports')
+    ]);
+    modalContent.innerHTML = renderFormVol(vol, aeroports);
+    modal.classList.remove('hidden');
+};
+
+window.removeVol = async (num, comp, date) => {
+    if(confirm("Supprimer ce vol ?")) {
+        await deleteData(`/api/Vol/${num}/${comp}/${encodeURIComponent(date)}`);
+        router();
+    }
+};
+
+window.viewVol = async (num, comp, date) => {
+    const vol = await getData(`/api/Vol/${num}/${comp}/${encodeURIComponent(date)}`);
+    modalContent.innerHTML = await renderDetailsVol(vol);
     modal.classList.remove('hidden');
 };
 
@@ -91,96 +77,104 @@ window.showAddAeroportForm = () => {
     modal.classList.remove('hidden');
 };
 
-window.editVol = async (num, comp, date) => {
-    const v = await getData(`/api/Vol/${num}/${comp}/${encodeURIComponent(date)}`);
-    if (v) {
-        modalContent.innerHTML = renderFormVol(v);
-        modal.classList.remove('hidden');
-    }
-};
-
-window.removeVol = async (num, comp, date) => {
-    if (confirm(`Supprimer le vol ${num} ?`)) {
-        await deleteData(`/api/Vol/${num}/${comp}/${encodeURIComponent(date)}`);
-        router();
-    }
-};
-
 window.editAeroport = async (code) => {
-    const aero = await getData(`/api/Aeroport/${code}`);
-    if (aero) {
-        modalContent.innerHTML = renderFormAeroport(aero);
-        modal.classList.remove('hidden');
-    }
-};
-
-window.removeAeroport = async (code) => {
-    if (confirm(`Supprimer l'aéroport ${code} ?`)) {
-        const success = await deleteData(`/api/Aeroport/${code}`);
-        if (success) router();
-        else alert("Erreur : Aéroport utilisé par des vols.");
-    }
-};
-
-// --- FORM SUBMIT ---
-document.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const payload = formToJSON(e.target);
-    const isEdit = e.target.querySelector('input[name="is_edit"]');
-    let result = null;
-
-    if (e.target.id === 'form-vol') {
-        if (isEdit) {
-            const { numero, compagnie, tempsD, ...updateBody } = payload;
-            result = await putData(`/api/Vol/${numero}/${compagnie}/${encodeURIComponent(tempsD)}`, updateBody);
-        } else {
-            result = await postData('/api/Vols', payload);
-        }
-    } else if (e.target.id === 'form-aeroport') {
-        if (isEdit) {
-            const { code, ...updateBody } = payload;
-            result = await putData(`/api/Aeroport/${code}`, updateBody);
-        } else {
-            result = await postData('/api/Aeroports', payload);
-        }
-    }
-
-    if (result) { closeModal(); router(); }
-});
-
-window.viewVol = async (num, comp, date) => {
-    const v = await getData(`/api/Vol/${num}/${comp}/${encodeURIComponent(date)}`);
-    if (v) {
-        modalContent.innerHTML = await renderDetailsVol(v); 
-        modal.classList.remove('hidden');
-    }
+    const aero = await getData(`/api/Aeroports/${code}`);
+    modalContent.innerHTML = renderFormAeroport(aero);
+    modal.classList.remove('hidden');
 };
 
 window.viewAeroport = async (code) => {
     const aero = await getData(`/api/Aeroports/${code}`);
-    if (aero) {
-        modalContent.innerHTML = await renderDetailsAeroport(aero);
-        modal.classList.remove('hidden');
+    modalContent.innerHTML = await renderDetailsAeroport(aero);
+    modal.classList.remove('hidden');
+};
+
+window.removeAeroport = async (code) => {
+    if(confirm("Supprimer l'aéroport ?")) {
+        await deleteData(`/api/Aeroports/${code}`);
+        router();
     }
 };
 
-window.executeQuickSearch = async () => {
-    const term = document.getElementById('quick-search-input').value.toLowerCase();
-    const resultsDiv = document.getElementById('quick-search-results');
-    if (!term) { resultsDiv.innerHTML = ""; return; }
+window.viewItinerary = async (n1, c1, d1, n2, c2, d2) => {
+    const [v1, v2] = await Promise.all([
+        getData(`/api/Vol/${n1}/${c1}/${encodeURIComponent(d1)}`),
+        getData(`/api/Vol/${n2}/${c2}/${encodeURIComponent(d2)}`)
+    ]);
+    modalContent.innerHTML = renderItinerary(v1, v2);
+    modal.classList.remove('hidden');
+};
 
+window.executeQuickSearch = async () => {
+    const input = document.getElementById('quick-search-input');
+    const resultsDiv = document.getElementById('quick-search-results');
+    if (!input || !resultsDiv) return;
+
+    const term = input.value.trim().toLowerCase();
+    if (term.length < 2) {
+        resultsDiv.innerHTML = "";
+        return;
+    }
+
+    // On fait la requête explicitement ici
     const vols = await getData('/api/Vols');
+    
     const filtered = vols.filter(v => 
-        v.numero.toString().includes(term) || v.compagnie.toLowerCase().includes(term)
+        v.numero.toString().includes(term) || 
+        v.compagnie.toLowerCase().includes(term) ||
+        v.aeroportD.toLowerCase().includes(term) ||
+        v.aeroportA.toLowerCase().includes(term)
     );
 
-    resultsDiv.innerHTML = filtered.length === 0 ? `<p>Aucun vol trouvé.</p>` : `
-        <div class="results-list">
+    resultsDiv.innerHTML = filtered.length === 0 ? `<p>Aucun résultat.</p>` : `
+        <div class="results-list" style="background: #1e293b; padding: 10px; border-radius: 8px;">
             ${filtered.map(v => `
-                <div class="search-result-item" onclick="viewVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">
-                    <span><strong>Vol ${v.numero}</strong> - ${v.compagnie}</span>
-                    <span class="result-link">Voir détails →</span>
+                <div class="search-result-item" style="padding: 10px; border-bottom: 1px solid #334155; cursor: pointer;" 
+                     onclick="viewVol('${v.numero}', '${v.compagnie}', '${v.tempsD}')">
+                    <strong>Vol ${v.numero}</strong> - ${v.compagnie} <br>
+                    <small>${v.aeroportD} ➔ ${v.aeroportA}</small>
                 </div>
             `).join('')}
-        </div>`;
+        </div>
+    `;
 };
+
+document.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // 1. Récupération des données du formulaire
+    const formData = new FormData(e.target);
+    const payload = Object.fromEntries(formData.entries());
+    const isEdit = payload.is_edit === 'true';
+
+    // 2. Traitement selon le formulaire
+    if (e.target.id === 'form-vol') {
+        // On extrait les identifiants pour l'URL
+        const { numero, compagnie, tempsD, is_edit, ...dataToSend } = payload;
+        
+        if (isEdit) {
+            // MODIFIER : On envoie uniquement le reste (restX) dans le body
+            // On enlève numero, compagnie et tempsD du JSON car ils sont déjà dans l'URL
+            const res = await putData(`/api/Vol/${numero}/${compagnie}/${encodeURIComponent(tempsD)}`, dataToSend);
+            if (res) { closeModal(); router(); }
+        } else {
+            // NOUVEAU : On envoie tout le payload
+            const res = await postData('/api/Vols', payload);
+            if (res) { closeModal(); router(); }
+        }
+    } 
+    else if (e.target.id === 'form-aeroport') {
+        const { code, is_edit, ...dataToSend } = payload;
+
+        if (isEdit) {
+            // MODIFIER : On enlève 'code' du JSON pour éviter "multiple values for argument code"
+            const res = await putData(`/api/Aeroports/${code}`, dataToSend);
+            if (res) { closeModal(); router(); }
+        } else {
+            // NOUVEAU : Ton erreur Python dit que create_aeroport ne veut pas de 'code'
+            // On envoie donc uniquement nom, ville, pays si c'est ce que ton API attend
+            const res = await postData('/api/Aeroports', dataToSend); 
+            if (res) { closeModal(); router(); }
+        }
+    }
+});
