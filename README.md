@@ -11,11 +11,9 @@ Le projet nécessite une connexion à une base de données Oracle. Vous devez co
 2. Ouvrez le fichier `.env` (créez-le s'il n'existe pas).
 3. Modifiez les lignes suivantes en remplaçant `moisan` par **votre nom d'utilisateur Oracle** :
 
-```env
+```py
 # Modifier 'moisan' par votre identifiant IUT
-DB_USER=votre_nom
-DB_PASSWORD=votre_mot_de_passe
-DB_HOST=oracle.iut-informatique.fr
+DATABASE_URL=oracle+oracledb://"moisan":"moisan"@ora12
 ```
 
 ## 2. Lancement du Backend (API)
