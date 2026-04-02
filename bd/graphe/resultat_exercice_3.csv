@@ -1,0 +1,34 @@
+aeroDebut.ville,aeroFin.ville,distance
+Paris,Rio de Janeiro,1
+Paris,Amsterdam,1
+Paris,Londres,2
+Paris,New York,3
+Paris,Rio de Janeiro,5
+Paris,Madrid,5
+Paris,Berlin,6
+Paris,Rome,5
+Paris,Madrid,1
+Paris,Berlin,2
+Paris,Rome,1
+Amsterdam,Londres,1
+Amsterdam,New York,2
+Amsterdam,Paris,3
+Amsterdam,Rio de Janeiro,4
+Amsterdam,Madrid,4
+Amsterdam,Berlin,5
+Amsterdam,Rome,4
+Madrid,Berlin,1
+Londres,New York,1
+Londres,Paris,2
+Londres,Rio de Janeiro,3
+Londres,Amsterdam,3
+Londres,Madrid,3
+Londres,Berlin,4
+Londres,Rome,3
+New York,Paris,1
+New York,Rio de Janeiro,2
+New York,Amsterdam,2
+New York,Londres,3
+New York,Madrid,2
+New York,Berlin,3
+New York,Rome,2

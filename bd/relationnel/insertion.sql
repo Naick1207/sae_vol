@@ -1,15 +1,3 @@
-insert into AEROPORT values(
-    456, 'Antonio Carlos', 'Brésil', 'Rio de Janeiro'
-);
-
-insert into AEROPORT values(
-    123, 'Charles de Gaulle', 'France', 'Paris'
-);
-
-insert into VOL values(
-    442, 'AirFrance', to_timestamp('12/02/2026 12:34:56', 'DD/MM/YYYY HH24:MI:SS'), '1', 123, to_timestamp('14/02/2026 14:42:23', 'DD/MM/YYYY HH24:MI:SS'), '2E', 456
-);
-
 INSERT INTO AEROPORT VALUES (100, 'Charles de Gaulle', 'France', 'Paris');
 INSERT INTO AEROPORT VALUES (200, 'Schiphol', 'Pays-Bas', 'Amsterdam');
 INSERT INTO AEROPORT VALUES (300, 'Barajas', 'Espagne', 'Madrid');
@@ -17,7 +5,15 @@ INSERT INTO AEROPORT VALUES (400, 'Fiumicino', 'Italie', 'Rome');
 INSERT INTO AEROPORT VALUES (500, 'Heathrow', 'Royaume-Uni', 'Londres');
 INSERT INTO AEROPORT VALUES (600, 'Tegel', 'Allemagne', 'Berlin');
 INSERT INTO AEROPORT VALUES (700, 'John F Kennedy', 'USA', 'New York');
+INSERT INTO AEROPORT VALUES(456, 'Antonio Carlos', 'Brésil', 'Rio de Janeiro');
 
+INSERT INTO VOL VALUES (
+    442, 'AirFrance',
+    TO_TIMESTAMP('12/02/2026 12:34:56', 'DD/MM/YYYY HH24:MI:SS'),
+    '1', 100,
+    TO_TIMESTAMP('14/02/2026 14:42:23', 'DD/MM/YYYY HH24:MI:SS'),
+    '2E', 456
+);
 INSERT INTO VOL VALUES (
     1, 'AirFrance',
     TO_TIMESTAMP('10/03/2026 08:00:00','DD/MM/YYYY HH24:MI:SS'),
