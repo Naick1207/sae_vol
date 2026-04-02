@@ -32,15 +32,17 @@ join AEROPORT aeroDep on aeroDep.code = vol1.codeAeroportD
 where aeroDep.ville = 'Paris' and vol2.tempsD >= vol1.tempsA and vol3.tempsD >= vol2.tempsA;
 
 -- d - Veuillez fournir la liste des villes accessibles depuis Paris, en tenant compte des horaires de vol, avec des vols directs ou un nombre quelconque de correspondances.
-WITH aeroDebut(code, ville) AS (
-    SELECT aero2.code, aero2.ville FROM AEROPORT aero2
+WITH aeroDebut(code, ville, tempsArrivee) AS (
+    SELECT aero2.code, aero2.ville, VOL.tempsA FROM AEROPORT aero2
     JOIN VOL ON aero2.code = VOL.codeAeroportA
     JOIN AEROPORT aeroParis ON aeroParis.code = VOL.codeAeroportD
     WHERE aeroParis.ville = 'Paris'
     UNION ALL
-    SELECT aeroFin.code, aeroFin.ville FROM aeroDebut
+    SELECT aeroFin.code, aeroFin.ville, VOL.tempsA FROM aeroDebut
     JOIN VOL ON aeroDebut.code = VOL.codeAeroportD
     JOIN AEROPORT aeroFin ON aeroFin.code = VOL.codeAeroportA
+    WHERE VOL.tempsD >= aeroDebut.tempsArrivee
+
 )
 CYCLE code SET cycle TO 1 DEFAULT 0
 SELECT DISTINCT ville FROM aeroDebut;
