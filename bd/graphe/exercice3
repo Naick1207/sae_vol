@@ -1,0 +1,4 @@
+MATCH vol = (aeroDebut:Aeroport) -[:VOL_VERS*]->(aeroFin:Aeroport)
+WHERE aeroDebut.code <> aeroFin.code
+RETURN aeroDebut.ville, aeroFin.ville, LENGTH(vol) AS distance
+ORDER BY aeroDebut ASC;

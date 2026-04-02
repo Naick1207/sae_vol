@@ -1,0 +1,17 @@
+CREATE (a456:Aeroport {code: 456, nom: 'Antonio Carlos', pays: 'Brésil', ville: 'Rio de Janeiro'}),
+       (a100:Aeroport {code: 100, nom: 'Charles de Gaulle', pays: 'France', ville: 'Paris'}),
+       (a200:Aeroport {code: 200, nom: 'Schiphol', pays: 'Pays-Bas', ville: 'Amsterdam'}),
+       (a300:Aeroport {code: 300, nom: 'Barajas', pays: 'Espagne', ville: 'Madrid'}),
+       (a400:Aeroport {code: 400, nom: 'Fiumicino', pays: 'Italie', ville: 'Rome'}),
+       (a500:Aeroport {code: 500, nom: 'Heathrow', pays: 'Royaume-Uni', ville: 'Londres'}),
+       (a600:Aeroport {code: 600, nom: 'Tegel', pays: 'Allemagne', ville: 'Berlin'}),
+       (a700:Aeroport {code: 700, nom: 'John F Kennedy', pays: 'USA', ville: 'New York'})
+
+CREATE (a100)-[:VOL_VERS {numero: 442, compagnie: 'AirFrance'}]->(a456),
+       (a100)-[:VOL_VERS {numero: 1, compagnie: 'AirFrance'}]->(a200),
+       (a100)-[:VOL_VERS {numero: 2, compagnie: 'AirFrance'}]->(a300),
+       (a100)-[:VOL_VERS {numero: 3, compagnie: 'Alitalia'}]->(a400),
+       (a200)-[:VOL_VERS {numero: 4, compagnie: 'KLM'}]->(a500),
+       (a300)-[:VOL_VERS {numero: 5, compagnie: 'Iberia'}]->(a600),
+       (a500)-[:VOL_VERS {numero: 6, compagnie: 'BritishAirways'}]->(a700),
+       (a700)-[:VOL_VERS {numero: 7, compagnie: 'AmericanEagle'}]->(a100)
